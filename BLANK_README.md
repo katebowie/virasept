@@ -37,16 +37,16 @@
 <h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3>
 
   <p align="left">
-    Biofilms growing in the sink drains of healthcare facilities are known to both harbor pathogens and be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
+    Biofilms growing in the sink drains of healthcare facilities are known to harbor pathogens and to also be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
     <br />
-    <a href="https://github.com/katebowie/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/katebowie/virasept"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/katebowie/repo_name">View Demo</a>
+    <a href="https://github.com/katebowie/virasept">View Demo</a>
     &middot;
-    <a href="https://github.com/katebowie/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/katebowie/virasept/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/katebowie/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/katebowie/virasept/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -106,12 +106,12 @@
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Overview
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+### Dataset
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
