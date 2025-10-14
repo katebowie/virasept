@@ -216,7 +216,7 @@ Project Link: [https://github.com/katebowie/virasept](https://github.com/katebow
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
+* [The noun project](https://thenounproject.com) - sink at top by Nendra Wahyu Kuncoro from Noun Project (CC BY 3.0)
 * []()
 * []()
 
