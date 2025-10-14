@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/katebowie/virasept">
-    <img src="images/sink.png" alt="Logo" width="80" height="80">
+    <img src="images/sink.png" alt="Logo" width="90" height="90">
   </a>
 
 <h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3>
