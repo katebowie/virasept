@@ -31,13 +31,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/katebowie/virasept">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/sink.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Virasept</h3>
+<h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3>
 
-  <p align="center">
-    project_description
+  <p align="left">
+    Biofilms growing in the sink drains of healthcare facilities are known to both harbor pathogens and be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
     <br />
     <a href="https://github.com/katebowie/repo_name"><strong>Explore the docs »</strong></a>
     <br />
