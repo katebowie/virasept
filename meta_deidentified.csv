@@ -1,0 +1,637 @@
+sample_id,room,day,plate_type,dilution,colony_type,count_plate,CFU_swab,plate_read_date,include,replated,room_type,before_after
+P1-1,P1,1,n,1000,big blue,47,940000,1719878400,y,NA,patient,before
+P2-1,P2,1,n,1000,big blue,48,960000,1719878400,y,NA,patient,before
+P2-1,P2,1,n,1000,small clear,26,520000,1719878400,y,NA,patient,before
+P9-1,P9,1,n,1000,small blue,16,320000,1719878400,y,NA,untreated,before
+P9-1,P9,1,n,1000,small clear,110,2200000,1719878400,y,NA,untreated,before
+H1-1,H1,1,p,1000,small clear,124,2480000,1719878400,y,NA,hallway,before
+P3-1,P3,1,n,1000,big blue,13,260000,1719878400,y,NA,patient,before
+P3-1,P3,1,n,1000,small blue,17,340000,1719878400,y,NA,patient,before
+P3-1,P3,1,n,1000,small clear,358,7160000,1719878400,y,NA,patient,before
+P9-1,P9,1,p,1000,small clear,89,1780000,1719878400,y,NA,untreated,before
+H3-1,H3,1,n,1000,small clear,434,8680000,1719878400,y,NA,hallway,before
+H3-1,H3,1,n,1000,big blue,2,40000,1719878400,y,NA,hallway,before
+H3-1,H3,1,n,1000,small blue,54,1080000,1719878400,y,NA,hallway,before
+P4-1,P4,1,n,1000,big blue,5,1e+05,1719878400,y,NA,patient,before
+P4-1,P4,1,n,1000,small clear,254,5080000,1719878400,y,NA,patient,before
+P4-1,P4,1,n,1000,small blue,392,7840000,1719878400,y,NA,patient,before
+P5-1,P5,1,n,1000,small clear,536,10720000,1719878400,y,NA,patient,before
+P5-1,P5,1,n,1000,small blue,15,3e+05,1719878400,y,NA,patient,before
+P2-1,P2,1,p,100,small clear,200,4e+05,1719878400,y,NA,patient,before
+P4-1,P4,1,p,1000,big clear,4,80000,1719878400,y,NA,patient,before
+P4-1,P4,1,p,1000,small clear,139,2780000,1719878400,y,NA,patient,before
+H5-1,H5,1,p,1000,big clear,26,520000,1719878400,y,NA,hallway,before
+H5-1,H5,1,p,1000,small blue,31,620000,1719878400,y,NA,hallway,before
+P3-1,P3,1,p,1000,small clear,79,1580000,1719878400,y,NA,patient,before
+P1-1,P1,1,p,100,small clear,34,68000,1719878400,y,NA,patient,before
+H3-1,H3,1,p,1000,small blue,1,20000,1719878400,y,NA,hallway,before
+H3-1,H3,1,p,1000,small clear,58,1160000,1719878400,y,NA,hallway,before
+P5-1,P5,1,p,1000,small clear,328,6560000,1719878400,y,NA,patient,before
+H2-1,H2,1,p,100,big clear,42,84000,1719878400,y,NA,hallway,before
+H2-1,H2,1,p,100,small clear,33,66000,1719878400,y,NA,hallway,before
+H2-1,H2,1,p,100,small blue,1,2000,1719878400,y,NA,hallway,before
+H2-1,H2,1,n,1000,big blue,96,1920000,1719878400,y,NA,hallway,before
+H2-1,H2,1,n,1000,big clear,30,6e+05,1719878400,y,NA,hallway,before
+P6-1,P6,1,n,1e+05,small blue,22,4.4e+07,1719964800,y,NA,patient,before
+H6-1,H6,1,n,1e+05,small clear,26,5.2e+07,1719964800,y,NA,hallway,before
+H6-1,H6,1,p,10000,small clear,11,2200000,1719964800,y,NA,hallway,before
+H4-1,H4,1,n,1e+05,big clear,7,1.4e+07,1719964800,y,NA,hallway,before
+H4-1,H4,1,n,1e+05,small blue,3,6e+06,1719964800,y,NA,hallway,before
+H4-1,H4,1,n,1e+05,small clear,5,1e+07,1719964800,y,NA,hallway,before
+H4-1,H4,1,p,10000,small clear,65,1.3e+07,1719964800,y,NA,hallway,before
+H4-1,H4,1,p,10000,small blue,1,2e+05,1719964800,y,NA,hallway,before
+P6-1,P6,1,p,1000,big clear,2,40000,1719964800,y,NA,patient,before
+P6-1,P6,1,p,1000,small clear,7,140000,1719964800,y,NA,patient,before
+H5-1,H5,1,n,1e+05,small blue,211,4.22e+08,1719964800,y,NA,hallway,before
+H5-1,H5,1,n,1e+05,small clear,62,1.24e+08,1719964800,y,NA,hallway,before
+H1-1,H1,1,n,1000,small clear,1456,29120000,1719964800,y,NA,hallway,before
+H1-1,H1,1,n,1000,small blue,56,1120000,1719964800,y,NA,hallway,before
+H4-8,H4,8,p,1000,small blue,30,6e+05,1720483200,y,NA,hallway,before
+H4-8,H4,8,p,1000,small clear,145,2900000,1720483200,y,NA,hallway,before
+H4-8,H4,8,n,10000,small blue,8,1600000,1720483200,y,NA,hallway,before
+H4-8,H4,8,n,10000,small clear,47,9400000,1720483200,y,NA,hallway,before
+H4-8,H4,8,n,10000,big clear,6,1200000,1720483200,y,NA,hallway,before
+H3-8,H3,8,p,1000,small clear,136,2720000,1720483200,y,NA,hallway,before
+H3-8,H3,8,p,1000,small blue,1,20000,1720483200,y,NA,hallway,before
+H3-8,H3,8,n,1000,small clear,116,2320000,1720483200,y,NA,hallway,before
+H3-8,H3,8,n,1000,small blue,14,280000,1720483200,y,NA,hallway,before
+H1-8,H1,8,n,1000,small clear,102,2040000,1720483200,y,NA,hallway,before
+H1-8,H1,8,n,1000,small blue,4,80000,1720483200,y,NA,hallway,before
+H1-8,H1,8,p,100,small clear,95,190000,1720483200,y,NA,hallway,before
+P6-8,P6,8,p,100,NA,0,0.1,1720483200,y,NA,patient,before
+P6-8,P6,8,n,10000,small blue,280,5.6e+07,1720483200,y,NA,patient,before
+P3-8,P3,8,p,1000,small clear,150,3e+06,1720483200,y,NA,patient,before
+P3-8,P3,8,n,1000,big blue,6,120000,1720483200,y,NA,patient,before
+P3-8,P3,8,n,1000,small blue,91,1820000,1720483200,y,NA,patient,before
+P3-8,P3,8,n,1000,small clear,34,680000,1720483200,y,NA,patient,before
+P2-8,P2,8,n,10000,small clear,103,20600000,1720483200,y,NA,patient,before
+P2-8,P2,8,n,10000,small blue,20,4e+06,1720483200,y,NA,patient,before
+P2-8,P2,8,n,10000,big blue,8,1600000,1720483200,y,NA,patient,before
+P2-8,P2,8,p,1000,small clear,1252,25040000,1720483200,y,NA,patient,before
+H6-8,H6,8,p,1000,small clear,388,7760000,1720483200,y,NA,hallway,before
+H6-8,H6,8,p,1000,big clear,424,8480000,1720483200,y,NA,hallway,before
+H6-8,H6,8,n,10000,big clear,76,15200000,1720483200,y,NA,hallway,before
+H6-8,H6,8,n,10000,big blue,3,6e+05,1720483200,y,NA,hallway,before
+H6-8,H6,8,n,10000,small blue,11,2200000,1720483200,y,NA,hallway,before
+H6-8,H6,8,n,10000,small clear,23,4600000,1720483200,y,NA,hallway,before
+P5-8,P5,8,n,1000,small blue,18,360000,1720483200,y,NA,patient,before
+P5-8,P5,8,n,1000,small clear,93,1860000,1720483200,y,NA,patient,before
+P5-8,P5,8,p,1000,small clear,48,960000,1720483200,y,NA,patient,before
+P4-8,P4,8,p,1000,small clear,49,980000,1720483200,y,NA,patient,before
+P4-8,P4,8,n,10000,small clear,24,4800000,1720483200,y,NA,patient,before
+P4-8,P4,8,n,10000,small blue,12,2400000,1720483200,y,NA,patient,before
+P4-8,P4,8,n,1000,big blue,5,1e+05,1720483200,y,NA,patient,before
+H2-8,H2,8,n,10000,small clear,51,10200000,1720483200,y,NA,hallway,before
+H2-8,H2,8,n,1000,big blue,12,240000,1720483200,y,NA,hallway,before
+H2-8,H2,8,p,1000,small clear,235,4700000,1720483200,y,NA,hallway,before
+P1-8,P1,8,p,1000,small clear,11,220000,1720483200,y,NA,patient,before
+P1-8,P1,8,n,1000,pink,3,60000,1720483200,y,NA,patient,before
+P1-8,P1,8,n,1000,big blue,186,3720000,1720483200,y,NA,patient,before
+P1-8,P1,8,n,1000,small clear,74,1480000,1720483200,y,NA,patient,before
+H5-8,H5,8,p,1000,small clear,64,1280000,1720483200,y,NA,hallway,before
+H5-8,H5,8,p,1000,big clear,3,60000,1720483200,y,NA,hallway,before
+H5-8,H5,8,p,1000,small blue,45,9e+05,1720483200,y,NA,hallway,before
+H5-8,H5,8,n,1000,small blue,94,1880000,1720483200,y,NA,hallway,before
+H5-8,H5,8,n,1000,big blue,2,40000,1720483200,y,NA,hallway,before
+H5-8,H5,8,n,1000,purple with pink halo,6,120000,1720483200,y,NA,hallway,before
+H5-8,H5,8,n,1000,small clear,155,3100000,1720483200,y,NA,hallway,before
+P6-15V,P6,15V,p,1,NA,0,0.1,1721088000,y,NA,patient,after
+P6-15V,P6,15V,n,100,small blue,320,640000,1721088000,y,NA,patient,after
+P1-15B,P1,15B,p,1000,small clear,122,2440000,1721088000,y,NA,patient,before
+P1-15B,P1,15B,n,10000,big blue,82,16400000,1721088000,y,NA,patient,before
+P1-15B,P1,15B,n,10000,small clear,5,1e+06,1721088000,y,NA,patient,before
+H5-15V,H5,15V,p,10,small clear,10,2000,1721088000,y,NA,hallway,after
+H5-15V,H5,15V,p,10,small blue,92,18400,1721088000,y,NA,hallway,after
+H5-15V,H5,15V,n,100,big blue,14,28000,1721088000,y,NA,hallway,after
+H5-15V,H5,15V,n,100,purple with pink halo,3,6000,1721088000,y,NA,hallway,after
+H5-15V,H5,15V,n,100,small blue,19,38000,1721088000,y,NA,hallway,after
+H5-15V,H5,15V,n,100,small clear,5,10000,1721088000,y,NA,hallway,after
+P3-15V,P3,15V,p,1,small clear,17,340,1721088000,y,NA,patient,after
+P3-15V,P3,15V,n,10,big blue,1,200,1721088000,y,NA,patient,after
+P3-15V,P3,15V,n,10,small clear,2,400,1721088000,y,NA,patient,after
+P5-15B,P5,15B,p,100,small clear,9,18000,1721088000,y,NA,patient,before
+P5-15B,P5,15B,n,1000,NA,0,0.1,1721088000,y,NA,patient,before
+P6-15B,P6,15B,p,100,NA,0,0.1,1721088000,y,NA,patient,before
+P6-15B,P6,15B,n,10000,small blue,140,2.8e+07,1721088000,y,NA,patient,before
+H1-15B,H1,15B,p,1000,small clear,55,1100000,1721088000,y,NA,hallway,before
+H1-15B,H1,15B,p,1000,big clear,1,20000,1721088000,y,NA,hallway,before
+H1-15B,H1,15B,n,10000,small blue,31,6200000,1721088000,y,NA,hallway,before
+H1-15B,H1,15B,n,10000,big blue,1,2e+05,1721088000,y,NA,hallway,before
+H1-15B,H1,15B,n,10000,small clear,22,4400000,1721088000,y,NA,hallway,before
+H1-15B,H1,15B,n,10000,big clear,42,8400000,1721088000,y,NA,hallway,before
+P4-15V,P4,15V,p,10,small clear,78,15600,1721088000,y,NA,patient,after
+P4-15V,P4,15V,n,100,small clear,27,54000,1721088000,y,NA,patient,after
+H2-15B,H2,15B,p,1000,small clear,696,13920000,1721088000,y,NA,hallway,before
+H2-15B,H2,15B,p,1000,small blue,4,80000,1721088000,y,NA,hallway,before
+H2-15B,H2,15B,n,1000,big blue,42,840000,1721088000,y,NA,hallway,before
+H2-15B,H2,15B,n,1000,small blue,11,220000,1721088000,y,NA,hallway,before
+H2-15B,H2,15B,n,10000,small clear,325,6.5e+07,1721088000,y,NA,hallway,before
+P2-15V,P2,15V,n,100,pink,9,18000,1721088000,y,NA,patient,after
+P2-15V,P2,15V,n,100,small clear,20,40000,1721088000,y,NA,patient,after
+P2-15V,P2,15V,n,100,big blue,1112,2224000,1721088000,y,NA,patient,after
+P2-15V,P2,15V,p,10,small clear,523,104600,1721088000,y,NA,patient,after
+H5-15B,H5,15B,n,10000,small clear,86,17200000,1721088000,y,NA,hallway,before
+H5-15B,H5,15B,n,10000,small blue,31,6200000,1721088000,y,NA,hallway,before
+H5-15B,H5,15B,p,1000,small clear,83,1660000,1721088000,y,NA,hallway,before
+H5-15B,H5,15B,p,1000,small blue,78,1560000,1721088000,y,NA,hallway,before
+H4-15B,H4,15B,n,10000,big clear,99,19800000,1721088000,y,NA,hallway,before
+H4-15B,H4,15B,n,10000,small blue,50,1e+07,1721088000,y,NA,hallway,before
+H4-15B,H4,15B,n,10000,small clear,14,2800000,1721088000,y,NA,hallway,before
+H4-15B,H4,15B,p,1000,small clear,988,19760000,1721088000,y,NA,hallway,before
+H4-15B,H4,15B,p,1000,small blue,164,3280000,1721088000,y,NA,hallway,before
+P3-15B,P3,15B,n,10000,big blue,11,2200000,1721088000,y,NA,patient,before
+P3-15B,P3,15B,n,10000,small blue,13,2600000,1721088000,y,NA,patient,before
+P3-15B,P3,15B,n,10000,small clear,6,1200000,1721088000,y,NA,patient,before
+P3-15B,P3,15B,p,1000,small clear,47,940000,1721088000,y,NA,patient,before
+P4-15B,P4,15B,p,1000,small clear,776,15520000,1721088000,y,NA,patient,before
+P4-15B,P4,15B,n,10000,small clear,780,1.56e+08,1721088000,y,NA,patient,before
+P1-15V,P1,15V,p,1,NA,0,0.1,1721088000,y,NA,patient,after
+P1-15V,P1,15V,n,100,big blue,99,198000,1721088000,y,NA,patient,after
+P1-15V,P1,15V,n,100,small blue,1,2000,1721088000,y,NA,patient,after
+P1-15V,P1,15V,n,100,pink,2,4000,1721088000,y,NA,patient,after
+P2-15B,P2,15B,n,1000,big blue,145,2900000,1721088000,y,NA,patient,before
+P2-15B,P2,15B,n,1000,small blue,12,240000,1721088000,y,NA,patient,before
+P2-15B,P2,15B,n,1000,small clear,67,1340000,1721088000,y,NA,patient,before
+P2-15B,P2,15B,n,1000,pink,3,60000,1721088000,y,NA,patient,before
+P2-15B,P2,15B,p,1000,small clear,682,13640000,1721088000,y,NA,patient,before
+H4-15V,H4,15V,p,1,NA,0,0.1,1721088000,y,NA,hallway,after
+H4-15V,H4,15V,n,10,NA,0,0.1,1721088000,y,NA,hallway,after
+H1-15V,H1,15V,p,1,small clear,33,660,1721088000,y,NA,hallway,after
+H1-15V,H1,15V,n,10,small clear,21,4200,1721088000,y,NA,hallway,after
+H1-15V,H1,15V,n,10,small blue,3,600,1721088000,y,NA,hallway,after
+H6-15V,H6,15V,n,100,big clear,10,20000,1721088000,y,NA,hallway,after
+H6-15V,H6,15V,n,100,small blue,9,18000,1721088000,y,NA,hallway,after
+H6-15V,H6,15V,n,100,small clear,9,18000,1721088000,y,NA,hallway,after
+H6-15V,H6,15V,p,10,small clear,117,23400,1721088000,y,NA,hallway,after
+H6-15B,H6,15B,n,10000,small clear,216,43200000,1721088000,y,NA,hallway,before
+H6-15B,H6,15B,n,10000,big clear,37,7400000,1721088000,y,NA,hallway,before
+H6-15B,H6,15B,p,1000,small clear,243,4860000,1721088000,y,NA,hallway,before
+H6-15B,H6,15B,p,1000,big clear,166,3320000,1721088000,y,NA,hallway,before
+H3-15V,H3,15V,p,1,NA,0,0.1,1721088000,y,NA,hallway,after
+H3-15V,H3,15V,n,10,small clear,11,2200,1721088000,y,NA,hallway,after
+P5-15V,P5,15V,p,1,NA,0,0.1,1721088000,y,NA,patient,after
+P5-15V,P5,15V,n,10,NA,0,0.1,1721088000,y,NA,patient,after
+H3-15B,H3,15B,n,1000,small clear,318,6360000,1721088000,y,NA,hallway,before
+H3-15B,H3,15B,n,1000,big clear,1,20000,1721088000,y,NA,hallway,before
+H3-15B,H3,15B,n,1000,small blue,228,4560000,1721088000,y,NA,hallway,before
+H3-15B,H3,15B,p,100,small clear,54,108000,1721088000,y,NA,hallway,before
+H2-15V,H2,15V,p,10,small clear,323,64600,1721088000,y,NA,hallway,after
+H2-15V,H2,15V,p,10,small blue,1,200,1721088000,y,NA,hallway,after
+H2-15V,H2,15V,n,100,small blue,1,2000,1721088000,y,NA,hallway,after
+H2-15V,H2,15V,n,100,small clear,64,128000,1721088000,y,NA,hallway,after
+P6-16,P6,16,p,1,NA,0,0.1,1721174400,y,NA,patient,after
+P6-16,P6,16,n,10,small blue,299,59800,1721174400,y,NA,patient,after
+P3-16,P3,16,p,10,small clear,34,6800,1721174400,y,NA,patient,after
+P3-16,P3,16,n,10,small clear,11,2200,1721174400,y,NA,patient,after
+P3-16,P3,16,n,10,small blue,31,6200,1721174400,y,NA,patient,after
+P3-16,P3,16,n,10,small purple,73,14600,1721174400,y,NA,patient,after
+P3-16,P3,16,n,10,big blue,43,8600,1721174400,y,NA,patient,after
+P1-16,P1,16,n,10,big blue,260,52000,1721174400,y,NA,patient,after
+P1-16,P1,16,n,10,pink,5,1000,1721174400,y,NA,patient,after
+P1-16,P1,16,p,1,NA,0,0.1,1721174400,y,NA,patient,after
+H4-16,H4,16,n,10,small clear,5,1000,1721174400,y,NA,hallway,after
+H4-16,H4,16,p,1,small clear,3,60,1721174400,y,NA,hallway,after
+H5-16,H5,16,p,1,small clear,26,520,1721174400,y,NA,hallway,after
+H5-16,H5,16,p,1,small blue,1,20,1721174400,y,NA,hallway,after
+H5-16,H5,16,n,10,big blue,356,71200,1721174400,y,NA,hallway,after
+H5-16,H5,16,n,NA,small clear,13,0.1,1721174400,y,NA,hallway,after
+H5-16,H5,16,n,NA,purple with pink halo,46,0.1,1721174400,y,NA,hallway,after
+P5-16,P5,16,n,10,small blue,8,1600,1721174400,y,NA,patient,after
+P5-16,P5,16,p,1,NA,0,0.1,1721174400,y,NA,patient,after
+H3-16,H3,16,n,10,small clear,1,200,1721174400,y,NA,hallway,after
+H3-16,H3,16,n,10,blue fungi,1,200,1721174400,y,NA,hallway,after
+H3-16,H3,16,p,1,big clear,3,60,1721174400,y,NA,hallway,after
+H6-16,H6,16,p,10,small clear,93,18600,1721174400,y,NA,hallway,after
+H6-16,H6,16,n,10,big blue,32,6400,1721174400,y,NA,hallway,after
+H6-16,H6,16,n,10,big clear,60,12000,1721174400,y,NA,hallway,after
+H6-16,H6,16,n,10,small blue,5,1000,1721174400,y,NA,hallway,after
+H6-16,H6,16,n,10,small purple,10,2000,1721174400,y,NA,hallway,after
+H6-16,H6,16,n,10,small clear,295,59000,1721174400,y,NA,hallway,after
+H1-16,H1,16,p,10,small blue,2,400,1721174400,y,NA,hallway,after
+H1-16,H1,16,p,10,small clear,422,84400,1721174400,y,NA,hallway,after
+H1-16,H1,16,n,500,small clear,114,1140000,1721174400,y,NA,hallway,after
+H1-16,H1,16,n,10,big blue,113,22600,1721174400,y,NA,hallway,after
+H2-16,H2,16,n,500,small clear,16,160000,1721174400,y,NA,hallway,after
+H2-16,H2,16,n,500,big blue,6,60000,1721174400,y,NA,hallway,after
+H2-16,H2,16,n,500,small blue,34,340000,1721174400,y,NA,hallway,after
+H2-16,H2,16,p,10,small clear,548,109600,1721174400,y,NA,hallway,after
+P2-16,P2,16,n,500,big clear,87,870000,1721174400,y,NA,patient,after
+P2-16,P2,16,n,500,small clear,460,4600000,1721174400,y,NA,patient,after
+P2-16,P2,16,n,500,big blue,10,1e+05,1721174400,y,NA,patient,after
+P2-16,P2,16,n,500,small blue,5,50000,1721174400,y,NA,patient,after
+P4-16,P4,16,n,500,small clear,52,520000,1721174400,y,NA,patient,after
+P4-16,P4,16,n,10,small blue,15,3000,1721174400,y,NA,patient,after
+P4-16,P4,16,p,100,small clear,208,416000,1721260800,y,y,patient,after
+P2-16,P2,16,p,500,small clear,470,4700000,1721260800,y,y,patient,after
+H2-17,H2,17,n,500,big blue,17,170000,1721260800,y,NA,hallway,after
+H2-17,H2,17,n,500,small blue,15,150000,1721260800,y,NA,hallway,after
+H2-17,H2,17,n,500,small clear,720,7200000,1721260800,y,NA,hallway,after
+H6-17,H6,17,n,500,big blue,81,810000,1721260800,y,NA,hallway,after
+H6-17,H6,17,n,500,big clear,7,70000,1721260800,y,NA,hallway,after
+H6-17,H6,17,n,500,small clear,372,3720000,1721260800,y,NA,hallway,after
+H6-17,H6,17,n,500,small blue,1,10000,1721260800,y,NA,hallway,after
+P1-17,P1,17,p,10,small clear,22,4400,1721260800,y,NA,patient,after
+P1-17,P1,17,n,500,small purple,6,60000,1721260800,y,NA,patient,after
+P1-17,P1,17,n,500,big blue,574,5740000,1721260800,y,NA,patient,after
+P3-17,P3,17,n,500,big blue,165,1650000,1721260800,y,NA,patient,after
+P3-17,P3,17,n,500,small blue,21,210000,1721260800,y,NA,patient,after
+P3-17,P3,17,n,500,small clear,57,570000,1721260800,y,NA,patient,after
+P4-17,P4,17,n,500,small blue,8,80000,1721260800,y,NA,patient,after
+P4-17,P4,17,n,500,small clear,782,7820000,1721260800,y,NA,patient,after
+P4-17,P4,17,p,100,small clear,876,1752000,1721260800,y,NA,patient,after
+H3-17,H3,17,p,1,NA,0,0.1,1721260800,y,NA,hallway,after
+H3-17,H3,17,n,10,NA,0,0.1,1721260800,y,NA,hallway,after
+P6-17,P6,17,p,1,big clear,20,400,1721260800,y,NA,patient,after
+P6-17,P6,17,n,10,big clear,18,3600,1721260800,y,NA,patient,after
+P6-17,P6,17,n,10,small blue,329,65800,1721260800,y,NA,patient,after
+H5-17,H5,17,p,10,small blue,9,1800,1721260800,y,NA,hallway,after
+H5-17,H5,17,p,10,small clear,174,34800,1721260800,y,NA,hallway,after
+H5-17,H5,17,n,500,small blue,3,30000,1721260800,y,NA,hallway,after
+H5-17,H5,17,n,500,small clear,155,1550000,1721260800,y,NA,hallway,after
+H5-17,H5,17,n,500,purple with pink halo,1,10000,1721260800,y,NA,hallway,after
+P5-17,P5,17,p,1,NA,0,0.1,1721260800,y,NA,patient,after
+P5-17,P5,17,n,10,small blue,139,27800,1721260800,y,NA,patient,after
+H4-17,H4,17,p,1,small clear,105,2100,1721260800,y,NA,hallway,after
+H4-17,H4,17,p,1,big clear,7,140,1721260800,y,NA,hallway,after
+H4-17,H4,17,p,1,small blue,1,20,1721260800,y,NA,hallway,after
+H4-17,H4,17,n,10,small clear,16,3200,1721260800,y,NA,hallway,after
+H4-17,H4,17,n,10,big clear,2,400,1721260800,y,NA,hallway,after
+H4-17,H4,17,n,10,big blue,5,1000,1721260800,y,NA,hallway,after
+H4-17,H4,17,n,10,small blue,32,6400,1721260800,y,NA,hallway,after
+H4-17,H4,17,n,10,purple with pink halo,24,4800,1721260800,y,NA,hallway,after
+P3-17,P3,17,p,500,small clear,146,1460000,1721347200,y,NA,patient,after
+P3-17,P3,17,p,10,big clear,13,2600,1721347200,y,NA,patient,after
+H6-17,H6,17,p,500,small clear,620,6200000,1721347200,y,NA,hallway,after
+H2-17,H2,17,p,500,small clear,568,5680000,1721347200,y,NA,hallway,after
+H2-17,H2,17,p,10,small blue,1,200,1721347200,y,NA,hallway,after
+P2-17,P2,17,n,5000,small clear,82,8200000,1721347200,y,NA,patient,after
+P2-17,P2,17,n,5000,big clear,45,4500000,1721347200,y,NA,patient,after
+P2-17,P2,17,n,5000,big blue,3,3e+05,1721347200,y,NA,patient,after
+P2-17,P2,17,n,500,pink,15,150000,1721347200,y,NA,patient,after
+P2-17,P2,17,p,500,small clear,1448,14480000,1721347200,y,NA,patient,after
+H1-17,H1,17,p,500,small clear,226,2260000,1721347200,y,NA,hallway,after
+H1-17,H1,17,p,500,big clear,11,110000,1721347200,y,NA,hallway,after
+H1-17,H1,17,p,10,small blue,234,46800,1721347200,y,NA,hallway,after
+H1-17,H1,17,n,5000,big blue,131,13100000,1721347200,y,NA,hallway,after
+H1-17,H1,17,n,5000,small clear,20,2e+06,1721347200,y,NA,hallway,after
+H4-18,H4,18,p,10,big clear,13,2600,1721347200,y,NA,hallway,after
+H4-18,H4,18,p,10,small clear,609,121800,1721347200,y,NA,hallway,after
+H4-18,H4,18,n,100,big clear,1,2000,1721347200,y,NA,hallway,after
+H4-18,H4,18,n,100,small clear,323,646000,1721347200,y,NA,hallway,after
+H4-18,H4,18,n,10,big blue,5,1000,1721347200,y,NA,hallway,after
+P3-18,P3,18,n,1000,small clear,2,40000,1721347200,y,NA,patient,after
+P3-18,P3,18,n,1000,pink,2,40000,1721347200,y,NA,patient,after
+P3-18,P3,18,n,1000,small blue,3,60000,1721347200,y,NA,patient,after
+P1-18,P1,18,n,10000,big blue,26,5200000,1721347200,y,NA,patient,after
+P1-18,P1,18,n,10000,small clear,122,24400000,1721347200,y,NA,patient,after
+P2-18,P2,18,p,5000,small clear,267,26700000,1721347200,y,NA,patient,after
+P2-18,P2,18,n,10000,small clear,237,47400000,1721347200,y,NA,patient,after
+P2-18,P2,18,n,10000,big blue,5,1e+06,1721347200,y,NA,patient,after
+P2-18,P2,18,n,10000,small blue,4,8e+05,1721347200,y,NA,patient,after
+P2-18,P2,18,n,10000,pink,1,2e+05,1721347200,y,NA,patient,after
+P3-18,P3,18,p,10,small clear,4,800,1721433600,y,NA,patient,after
+P1-18,P1,18,p,1000,small clear,756,15120000,1721433600,y,NA,patient,after
+H3-18,H3,18,p,1000,small clear,36,720000,1721433600,y,NA,hallway,after
+H3-18,H3,18,n,1000,small clear,189,3780000,1721433600,y,NA,hallway,after
+H1-18,H1,18,p,5000,small clear,367,36700000,1721347200,y,NA,hallway,after
+H1-18,H1,18,p,5000,small blue,1,1e+05,1721347200,y,NA,hallway,after
+H1-18,H1,18,n,10000,small clear,215,4.3e+07,1721347200,y,NA,hallway,after
+H1-18,H1,18,n,10000,big clear,3,6e+05,1721347200,y,NA,hallway,after
+H1-18,H1,18,n,10000,big blue,6,1200000,1721347200,y,NA,hallway,after
+H1-18,H1,18,n,10000,small blue,1,2e+05,1721347200,y,NA,hallway,after
+H6-18,H6,18,p,500,small clear,44,440000,1721347200,y,NA,hallway,after
+H6-18,H6,18,n,1000,small clear,22,440000,1721347200,y,NA,hallway,after
+H5-18,H5,18,p,500,small blue,1,10000,1721347200,y,NA,hallway,after
+H5-18,H5,18,p,500,small clear,45,450000,1721347200,y,NA,hallway,after
+H5-18,H5,18,n,1000,small blue,1,20000,1721347200,y,NA,hallway,after
+H5-18,H5,18,n,1000,small clear,29,580000,1721347200,y,NA,hallway,after
+H5-18,H5,18,n,100,purple with pink halo,6,12000,1721347200,y,NA,hallway,after
+H5-18,H5,18,n,100,big blue,1,2000,1721347200,y,NA,hallway,after
+P5-18,P5,18,p,1,NA,0,0.1,1721347200,y,NA,patient,after
+P5-18,P5,18,n,10,small blue,1,200,1721347200,y,NA,patient,after
+P4-18,P4,18,p,5000,small clear,78,7800000,1721347200,y,NA,patient,after
+P4-18,P4,18,n,10000,small clear,79,15800000,1721347200,y,NA,patient,after
+P4-18,P4,18,n,10000,small blue,6,1200000,1721347200,y,NA,patient,after
+H2-18,H2,18,n,10000,big blue,1,2e+05,1721347200,y,NA,hallway,after
+H2-18,H2,18,n,10000,small clear,40,8e+06,1721347200,y,NA,hallway,after
+H2-18,H2,18,p,5000,small clear,24,2400000,1721347200,y,NA,hallway,after
+H2-18,H2,18,p,500,small blue,2,20000,1721347200,y,NA,hallway,after
+P6-18,P6,18,n,1000,small blue,10,2e+05,1721347200,y,NA,patient,after
+P6-18,P6,18,n,1000,small clear,9,180000,1721347200,y,NA,patient,after
+P6-18,P6,18,p,10,small clear,152,30400,1721347200,y,NA,patient,after
+P4-19,P4,19,n,10000,small clear,119,23800000,1721433600,y,NA,patient,after
+P4-19,P4,19,p,10000,small clear,78,15600000,1721433600,y,NA,patient,after
+P1-19,P1,19,n,10000,big blue,23,4600000,1721433600,y,NA,patient,after
+P1-19,P1,19,n,10000,small clear,5,1e+06,1721433600,y,NA,patient,after
+P1-19,P1,19,p,1000,small clear,102,2040000,1721433600,y,NA,patient,after
+P3-19,P3,19,n,1000,small blue,13,260000,1721433600,y,NA,patient,after
+P3-19,P3,19,p,10,small clear,68,13600,1721433600,y,NA,patient,after
+H5-19,H5,19,n,1000,small clear,602,12040000,1721433600,y,NA,hallway,after
+H5-19,H5,19,n,1000,big blue,16,320000,1721433600,y,NA,hallway,after
+H5-19,H5,19,p,10000,small blue,1,2e+05,1721433600,y,NA,hallway,after
+H5-19,H5,19,p,10000,small clear,120,2.4e+07,1721433600,y,NA,hallway,after
+H2-19,H2,19,n,1000,small blue,4,80000,1721433600,y,NA,hallway,after
+H2-19,H2,19,n,1000,big blue,1,20000,1721433600,y,NA,hallway,after
+H2-19,H2,19,n,10000,small clear,489,97800000,1721433600,y,NA,hallway,after
+H2-19,H2,19,p,5000,small blue,2,2e+05,1721433600,y,NA,hallway,after
+H2-19,H2,19,p,5000,small clear,195,19500000,1721433600,y,NA,hallway,after
+H1-19,H1,19,n,10000,small clear,253,50600000,1721433600,y,NA,hallway,after
+H1-19,H1,19,n,10000,big blue,1,2e+05,1721433600,y,NA,hallway,after
+H1-19,H1,19,n,10000,small blue,6,1200000,1721433600,y,NA,hallway,after
+H1-19,H1,19,p,1000,small blue,1,20000,1721433600,y,NA,hallway,after
+H1-19,H1,19,p,1000,small clear,784,15680000,1721433600,y,NA,hallway,after
+P2-19,P2,19,n,10000,big blue,1,2e+05,1721433600,y,NA,patient,after
+P2-19,P2,19,n,10000,small clear,118,23600000,1721433600,y,NA,patient,after
+P2-19,P2,19,n,10000,small blue,1,2e+05,1721433600,y,NA,patient,after
+P2-19,P2,19,n,10000,pink,5,1e+06,1721433600,y,NA,patient,after
+P2-19,P2,19,p,10000,small clear,75,1.5e+07,1721433600,y,NA,patient,after
+P5-19,P5,19,p,10,small clear,6,1200,1721433600,y,NA,patient,after
+P5-19,P5,19,n,10,small blue,14,2800,1721433600,y,NA,patient,after
+P5-19,P5,19,n,10,small clear,8,1600,1721433600,y,NA,patient,after
+H3-19,H3,19,n,10000,small clear,391,78200000,1721433600,y,NA,hallway,after
+H3-19,H3,19,n,10000,small blue,21,4200000,1721433600,y,NA,hallway,after
+H3-19,H3,19,p,10000,small clear,203,40600000,1721433600,y,NA,hallway,after
+P6-19,P6,19,p,10,small clear,1488,297600,1721433600,y,NA,patient,after
+P6-19,P6,19,n,1000,small clear,31,620000,1721433600,y,NA,patient,after
+P6-19,P6,19,n,1000,small blue,19,380000,1721433600,y,NA,patient,after
+H4-19,H4,19,n,500,small clear,226,2260000,1721433600,y,NA,hallway,after
+H4-19,H4,19,n,500,big blue,3,30000,1721433600,y,NA,hallway,after
+H4-19,H4,19,p,100,small blue,2,4000,1721433600,y,NA,hallway,after
+H4-19,H4,19,p,100,small clear,772,1544000,1721433600,y,NA,hallway,after
+H6-19,H6,19,p,5000,small clear,170,1.7e+07,1721433600,y,NA,hallway,after
+H6-19,H6,19,p,5000,big clear,4,4e+05,1721433600,y,NA,hallway,after
+H6-19,H6,19,n,10000,big clear,2,4e+05,1721433600,y,NA,hallway,after
+H6-19,H6,19,n,10000,small clear,58,11600000,1721433600,y,NA,hallway,after
+H6-19,H6,19,n,1000,big blue,28,560000,1721433600,y,NA,hallway,after
+P3-20,P3,20,n,1000,small blue,11,220000,1721520000,y,NA,patient,after
+P3-20,P3,20,n,1000,small clear,9,180000,1721520000,y,NA,patient,after
+P3-20,P3,20,p,100,small blue,3,6000,1721520000,y,NA,patient,after
+P3-20,P3,20,p,100,small clear,17,34000,1721520000,y,NA,patient,after
+P5-20,P5,20,p,10,small clear,768,153600,1721520000,y,NA,patient,after
+P5-20,P5,20,n,100,small blue,15,30000,1721520000,y,NA,patient,after
+P5-20,P5,20,n,100,big clear,97,194000,1721520000,y,NA,patient,after
+H3-20,H3,20,p,10000,small clear,140,2.8e+07,1721520000,y,NA,hallway,after
+H3-20,H3,20,n,10000,small blue,154,30800000,1721520000,y,NA,hallway,after
+H3-20,H3,20,n,10000,small clear,214,42800000,1721520000,y,NA,hallway,after
+H3-20,H3,20,n,10000,big clear,2,4e+05,1721520000,y,NA,hallway,after
+P4-20,P4,20,p,10000,big clear,48,9600000,1721520000,y,NA,patient,after
+P4-20,P4,20,p,10000,small clear,184,36800000,1721520000,y,NA,patient,after
+P4-20,P4,20,n,10000,big clear,80,1.6e+07,1721520000,y,NA,patient,after
+P4-20,P4,20,n,10000,small clear,208,41600000,1721520000,y,NA,patient,after
+H4-20,H4,20,p,1000,small clear,248,4960000,1721520000,y,NA,hallway,after
+H4-20,H4,20,n,1000,big clear,44,880000,1721520000,y,NA,hallway,after
+H4-20,H4,20,n,1000,small clear,136,2720000,1721520000,y,NA,hallway,after
+H2-20,H2,20,n,10000,big clear,42,8400000,1721520000,y,NA,hallway,after
+H2-20,H2,20,n,10000,small clear,198,39600000,1721520000,y,NA,hallway,after
+H2-20,H2,20,p,1000,small clear,230,4600000,1721520000,y,NA,hallway,after
+P1-20,P1,20,n,10000,big blue,268,53600000,1721520000,y,NA,patient,after
+P1-20,P1,20,p,1000,small clear,652,13040000,1721520000,y,NA,patient,after
+P6-20,P6,20,n,100,big blue,2,4000,1721520000,y,NA,patient,after
+P6-20,P6,20,n,1000,small blue,24,480000,1721520000,y,NA,patient,after
+P6-20,P6,20,n,1000,big clear,13,260000,1721520000,y,NA,patient,after
+P6-20,P6,20,n,1000,small clear,14,280000,1721520000,y,NA,patient,after
+P6-20,P6,20,p,1000,big clear,8,160000,1721520000,y,NA,patient,after
+P6-20,P6,20,p,1000,small clear,1,20000,1721520000,y,NA,patient,after
+H5-20,H5,20,n,1000,big blue,4,80000,1721520000,y,NA,hallway,after
+H5-20,H5,20,n,1000,small blue,1,20000,1721520000,y,NA,hallway,after
+H5-20,H5,20,n,1000,purple with pink halo,3,60000,1721520000,y,NA,hallway,after
+H5-20,H5,20,n,5000,small clear,332,33200000,1721520000,y,NA,hallway,after
+H5-20,H5,20,p,1000,small clear,174,3480000,1721520000,y,NA,hallway,after
+H5-20,H5,20,p,1000,small blue,2,40000,1721520000,y,NA,hallway,after
+H1-20,H1,20,p,5000,small clear,41,4100000,1721520000,y,NA,hallway,after
+H1-20,H1,20,n,1000,big blue,1,20000,1721520000,y,NA,hallway,after
+H1-20,H1,20,n,10000,big clear,20,4e+06,1721520000,y,NA,hallway,after
+H1-20,H1,20,n,10000,small clear,468,93600000,1721520000,y,NA,hallway,after
+H1-20,H1,20,n,10000,small blue,11,2200000,1721520000,y,NA,hallway,after
+P2-20,P2,20,p,10000,small clear,528,105600000,1721520000,y,NA,patient,after
+P2-20,P2,20,n,10000,small clear,212,42400000,1721520000,y,NA,patient,after
+P2-20,P2,20,n,10000,big clear,88,17600000,1721520000,y,NA,patient,after
+P2-20,P2,20,n,10000,big blue,32,6400000,1721520000,y,NA,patient,after
+P2-20,P2,20,n,10000,small blue,18,3600000,1721520000,y,NA,patient,after
+P2-20,P2,20,n,10000,pink,6,1200000,1721520000,y,NA,patient,after
+H6-20,H6,20,p,5000,big clear,58,5800000,1721520000,y,NA,hallway,after
+H6-20,H6,20,p,5000,small clear,126,12600000,1721520000,y,NA,hallway,after
+H6-20,H6,20,n,10000,big blue,5,1e+06,1721520000,y,NA,hallway,after
+H6-20,H6,20,n,10000,small blue,23,4600000,1721520000,y,NA,hallway,after
+H6-20,H6,20,n,10000,big clear,38,7600000,1721520000,y,NA,hallway,after
+H6-20,H6,20,n,10000,small clear,254,50800000,1721520000,y,NA,hallway,after
+P2-22,P2,22,n,1e+05,small blue,13,2.6e+07,1721692800,y,NA,patient,after
+P2-22,P2,22,n,1e+05,small clear,110,2.2e+08,1721692800,y,NA,patient,after
+P2-22,P2,22,n,1e+05,big blue,4,8e+06,1721692800,y,NA,patient,after
+P2-22,P2,22,p,1e+05,small clear,47,9.4e+07,1721692800,y,NA,patient,after
+P4-22,P4,22,n,1e+05,small blue,1,2e+06,1721692800,y,NA,patient,after
+P4-22,P4,22,n,1e+05,big clear,2,4e+06,1721692800,y,NA,patient,after
+P4-22,P4,22,n,1e+05,small clear,27,5.4e+07,1721692800,y,NA,patient,after
+P4-22,P4,22,p,1e+05,small clear,17,3.4e+07,1721692800,y,NA,patient,after
+H4-22,H4,22,p,10000,small clear,46,9200000,1721692800,y,NA,hallway,after
+H4-22,H4,22,n,10000,small clear,64,12800000,1721692800,y,NA,hallway,after
+H4-22,H4,22,n,10000,small blue,1,2e+05,1721692800,y,NA,hallway,after
+P3-22,P3,22,p,100,small blue,38,76000,1721692800,y,NA,patient,after
+P3-22,P3,22,p,100,small clear,892,1784000,1721692800,y,NA,patient,after
+P3-22,P3,22,n,1000,small blue,76,1520000,1721692800,y,NA,patient,after
+P3-22,P3,22,n,1000,big blue,4,80000,1721692800,y,NA,patient,after
+P3-22,P3,22,n,1000,pink,3,60000,1721692800,y,NA,patient,after
+P3-22,P3,22,n,1000,small clear,153,3060000,1721692800,y,NA,patient,after
+P1-22,P1,22,p,10000,small clear,179,35800000,1721692800,y,NA,patient,after
+P1-22,P1,22,n,1e+05,big blue,9,1.8e+07,1721692800,y,NA,patient,after
+P1-22,P1,22,n,1e+05,small clear,15,3e+07,1721692800,y,NA,patient,after
+H3-22,H3,22,p,10000,small clear,125,2.5e+07,1721692800,y,NA,hallway,after
+H3-22,H3,22,p,10000,big clear,8,1600000,1721692800,y,NA,hallway,after
+H3-22,H3,22,n,1e+05,small clear,10,2e+07,1721692800,y,NA,hallway,after
+H3-22,H3,22,n,1e+05,small blue,6,1.2e+07,1721692800,y,NA,hallway,after
+H1-22,H1,22,n,1e+05,small blue,2,4e+06,1721692800,y,NA,hallway,after
+H1-22,H1,22,n,1e+05,small clear,53,1.06e+08,1721692800,y,NA,hallway,after
+H1-22,H1,22,p,10000,small blue,10,2e+06,1721692800,y,NA,hallway,after
+H1-22,H1,22,p,10000,small clear,26,5200000,1721692800,y,NA,hallway,after
+H1-22,H1,22,n,10000,big clear,1,2e+05,1721692800,y,NA,hallway,after
+H1-22,H1,22,n,10000,big blue,2,4e+05,1721692800,y,NA,hallway,after
+H5-22,H5,22,n,10000,small blue,4,8e+05,1721692800,y,NA,hallway,after
+H5-22,H5,22,n,10000,small clear,225,4.5e+07,1721692800,y,NA,hallway,after
+H5-22,H5,22,p,10000,small blue,8,1600000,1721692800,y,NA,hallway,after
+H5-22,H5,22,p,10000,small clear,230,4.6e+07,1721692800,y,NA,hallway,after
+P5-22,P5,22,n,1000,small clear,2224,44480000,1721692800,y,NA,patient,after
+P5-22,P5,22,n,1000,small blue,2,40000,1721692800,y,NA,patient,after
+P5-22,P5,22,p,1000,small clear,1976,39520000,1721692800,y,NA,patient,after
+H6-22,H6,22,p,10000,big clear,160,3.2e+07,1721692800,y,NA,hallway,after
+H6-22,H6,22,p,10000,small clear,276,55200000,1721692800,y,NA,hallway,after
+H2-22,H2,22,p,10000,small blue,1,2e+05,1721692800,y,NA,hallway,after
+H2-22,H2,22,p,10000,small clear,47,9400000,1721692800,y,NA,hallway,after
+H2-22,H2,22,n,10000,small blue,11,2200000,1721692800,y,NA,hallway,after
+H2-22,H2,22,n,10000,big blue,4,8e+05,1721692800,y,NA,hallway,after
+H2-22,H2,22,n,1e+05,small clear,30,6e+07,1721692800,y,NA,hallway,after
+P6-22,P6,22,n,100,big blue,35,70000,1721692800,y,NA,patient,after
+P6-22,P6,22,n,100,purple with pink halo,5,10000,1721692800,y,NA,patient,after
+P2-25,P2,25,p,10000,small clear,77,15400000,1721952000,y,NA,patient,after
+P2-25,P2,25,n,10000,pink,1,2e+05,1721952000,y,NA,patient,after
+P2-25,P2,25,n,10000,small blue,8,1600000,1721952000,y,NA,patient,after
+P2-25,P2,25,n,10000,small clear,69,13800000,1721952000,y,NA,patient,after
+P2-25,P2,25,n,10000,big clear,1,2e+05,1721952000,y,NA,patient,after
+H1-25,H1,25,p,1000,big clear,14,280000,1721952000,y,NA,hallway,after
+H1-25,H1,25,p,1000,small blue,25,5e+05,1721952000,y,NA,hallway,after
+H1-25,H1,25,p,1000,small clear,166,3320000,1721952000,y,NA,hallway,after
+H1-25,H1,25,n,10000,small clear,163,32600000,1721952000,y,NA,hallway,after
+H1-25,H1,25,n,10000,small blue,42,8400000,1721952000,y,NA,hallway,after
+H1-25,H1,25,n,10000,big blue,3,6e+05,1721952000,y,NA,hallway,after
+H1-25,H1,25,n,10000,big clear,7,1400000,1721952000,y,NA,hallway,after
+H5-25,H5,25,p,10000,small blue,6,1200000,1721952000,y,NA,hallway,after
+H5-25,H5,25,p,10000,small clear,185,3.7e+07,1721952000,y,NA,hallway,after
+H5-25,H5,25,n,1e+05,small blue,2,4e+06,1721952000,y,NA,hallway,after
+H5-25,H5,25,n,1e+05,small clear,36,7.2e+07,1721952000,y,NA,hallway,after
+H2-25,H2,25,n,1e+05,small clear,52,1.04e+08,1721952000,y,NA,hallway,after
+H2-25,H2,25,p,10000,small clear,264,52800000,1721952000,y,NA,hallway,after
+H2-25,H2,25,p,10000,small blue,1,2e+05,1721952000,y,NA,hallway,after
+P1-25,P1,25,n,10000,small clear,288,57600000,1721952000,y,NA,patient,after
+P1-25,P1,25,n,10000,big blue,10,2e+06,1721952000,y,NA,patient,after
+P1-25,P1,25,p,1e+05,small clear,61,1.22e+08,1721952000,y,NA,patient,after
+H6-25,H6,25,n,1e+05,small clear,182,3.64e+08,1721952000,y,NA,hallway,after
+H6-25,H6,25,n,1e+05,big clear,16,3.2e+07,1721952000,y,NA,hallway,after
+H6-25,H6,25,p,1e+05,small clear,21,4.2e+07,1721952000,y,NA,hallway,after
+P6-25,P6,25,n,1e+05,big blue,1,2e+06,1721952000,y,NA,patient,after
+P6-25,P6,25,n,1e+05,small blue,2,4e+06,1721952000,y,NA,patient,after
+P6-25,P6,25,n,1e+05,small clear,494,9.88e+08,1721952000,y,NA,patient,after
+P6-25,P6,25,p,1e+05,small clear,152,3.04e+08,1721952000,y,NA,patient,after
+P4-25,P4,25,n,10000,small clear,96,19200000,1721952000,y,NA,patient,after
+P4-25,P4,25,n,10000,small blue,24,4800000,1721952000,y,NA,patient,after
+P4-25,P4,25,p,10000,big clear,5,1e+06,1721952000,y,NA,patient,after
+P4-25,P4,25,p,10000,small clear,77,15400000,1721952000,y,NA,patient,after
+H3-25,H3,25,n,10000,small blue,5,1e+06,1721952000,y,NA,hallway,after
+H3-25,H3,25,n,10000,small clear,61,12200000,1721952000,y,NA,hallway,after
+H3-25,H3,25,p,10000,small clear,27,5400000,1721952000,y,NA,hallway,after
+P3-25,P3,25,n,10000,small blue,36,7200000,1721952000,y,NA,patient,after
+P3-25,P3,25,n,10000,small clear,272,54400000,1721952000,y,NA,patient,after
+P3-25,P3,25,p,10000,small clear,476,95200000,1721952000,y,NA,patient,after
+H4-25,H4,25,n,10000,small clear,91,18200000,1721952000,y,NA,hallway,after
+H4-25,H4,25,p,10000,small clear,38,7600000,1721952000,y,NA,hallway,after
+P5-25,P5,25,n,1e+05,big clear,23,4.6e+07,1721952000,y,NA,patient,after
+P5-25,P5,25,n,1e+05,small clear,114,2.28e+08,1721952000,y,NA,patient,after
+P5-25,P5,25,n,1e+05,small blue,2,4e+06,1721952000,y,NA,patient,after
+P5-25,P5,25,p,1e+05,small clear,110,2.2e+08,1721952000,y,NA,patient,after
+P4-29,P4,29,p,10000,small clear,59,11800000,1722297600,y,NA,patient,after
+P4-29,P4,29,n,10000,small clear,42,8400000,1722297600,y,NA,patient,after
+P4-29,P4,29,n,10000,small blue,7,1400000,1722297600,y,NA,patient,after
+P3-29,P3,29,p,1e+05,small clear,21,4.2e+07,1722297600,y,NA,patient,after
+P3-29,P3,29,n,10000,small clear,86,17200000,1722297600,y,NA,patient,after
+P3-29,P3,29,n,10000,small blue,12,2400000,1722297600,y,NA,patient,after
+P6-29,P6,29,p,1e+05,small clear,17,3.4e+07,1722297600,y,NA,patient,after
+P6-29,P6,29,p,1e+05,big clear,5,1e+07,1722297600,y,NA,patient,after
+P6-29,P6,29,n,1e+05,small clear,12,2.4e+07,1722297600,y,NA,patient,after
+P6-29,P6,29,n,1e+05,big clear,5,1e+07,1722297600,y,NA,patient,after
+P1-29,P1,29,p,1e+05,small clear,36,7.2e+07,1722297600,y,NA,patient,after
+P1-29,P1,29,n,1e+05,small clear,28,5.6e+07,1722297600,y,NA,patient,after
+P1-29,P1,29,n,1e+05,big blue,11,2.2e+07,1722297600,y,NA,patient,after
+H8-29,H8,29,p,10000,small blue,4,8e+05,1722297600,y,NA,untreated,after
+H8-29,H8,29,p,10000,small clear,15,3e+06,1722297600,y,NA,untreated,after
+H8-29,H8,29,n,10000,small blue,107,21400000,1722297600,y,NA,untreated,after
+H8-29,H8,29,n,10000,small clear,24,4800000,1722297600,y,NA,untreated,after
+P9-29,P9,29,p,1000,small clear,5,1e+05,1722297600,y,NA,untreated,after
+P9-29,P9,29,n,10000,small clear,38,7600000,1722297600,y,NA,untreated,after
+P9-29,P9,29,n,10000,pink,19,3800000,1722297600,y,NA,untreated,after
+P9-29,P9,29,n,10000,small blue,6,1200000,1722297600,y,NA,untreated,after
+P2-29,P2,29,p,10000,small clear,85,1.7e+07,1722297600,y,NA,patient,after
+P2-29,P2,29,n,10000,small blue,12,2400000,1722297600,y,NA,patient,after
+P2-29,P2,29,n,10000,pink,1,2e+05,1722297600,y,NA,patient,after
+P2-29,P2,29,n,10000,small clear,139,27800000,1722297600,y,NA,patient,after
+P2-29,P2,29,n,10000,big blue,6,1200000,1722297600,y,NA,patient,after
+P5-29,P5,29,p,10000,small clear,150,3e+07,1722297600,y,NA,patient,after
+P5-29,P5,29,n,10000,small clear,120,2.4e+07,1722297600,y,NA,patient,after
+P5-29,P5,29,n,10000,big clear,1,2e+05,1722297600,y,NA,patient,after
+H7-29,H7,29,p,1000,small clear,17,340000,1722297600,y,NA,untreated,after
+H7-29,H7,29,n,10000,small clear,36,7200000,1722297600,y,NA,untreated,after
+H7-29,H7,29,n,10000,small blue,69,13800000,1722297600,y,NA,untreated,after
+H4-29,H4,29,p,1e+05,small clear,25,5e+07,1722297600,y,NA,hallway,after
+H4-29,H4,29,n,1e+05,small clear,34,6.8e+07,1722297600,y,NA,hallway,after
+H4-29,H4,29,n,1e+05,small blue,2,4e+06,1722297600,y,NA,hallway,after
+H1-29,H1,29,p,10000,small clear,17,3400000,1722297600,y,NA,hallway,after
+H1-29,H1,29,n,10000,small clear,67,13400000,1722297600,y,NA,hallway,after
+H1-29,H1,29,n,10000,small blue,17,3400000,1722297600,y,NA,hallway,after
+H6-29,H6,29,p,10000,small clear,65,1.3e+07,1722297600,y,NA,hallway,after
+H6-29,H6,29,n,1e+05,small clear,61,1.22e+08,1722297600,y,NA,hallway,after
+H6-29,H6,29,n,1e+05,big clear,8,1.6e+07,1722297600,y,NA,hallway,after
+H5-29,H5,29,p,10000,small clear,74,14800000,1722297600,y,NA,hallway,after
+H5-29,H5,29,p,10000,small blue,11,2200000,1722297600,y,NA,hallway,after
+H5-29,H5,29,n,1e+05,small clear,118,2.36e+08,1722297600,y,NA,hallway,after
+H5-29,H5,29,n,1e+05,small blue,4,8e+06,1722297600,y,NA,hallway,after
+H3-29,H3,29,n,1e+05,small clear,48,9.6e+07,1722297600,y,NA,hallway,after
+H3-29,H3,29,n,1e+05,big clear,2,4e+06,1722297600,y,NA,hallway,after
+H3-29,H3,29,n,1e+05,small blue,22,4.4e+07,1722297600,y,NA,hallway,after
+H3-29,H3,29,p,1e+05,small clear,47,9.4e+07,1722297600,y,NA,hallway,after
+H2-29,H2,29,n,1e+05,big clear,7,1.4e+07,1722297600,y,NA,hallway,after
+H2-29,H2,29,n,1e+05,small clear,67,1.34e+08,1722297600,y,NA,hallway,after
+H2-29,H2,29,p,10000,small clear,168,33600000,1722297600,y,NA,hallway,after
+P4-36,P4,36,n,10000,small clear,15,3e+06,1722902400,y,NA,patient,after
+P4-36,P4,36,n,10000,small blue,6,1200000,1722902400,y,NA,patient,after
+P4-36,P4,36,p,10000,small clear,9,1800000,1722902400,y,NA,patient,after
+H1-36,H1,36,p,10000,sc,3,6e+05,1722902400,y,NA,hallway,after
+H1-36,H1,36,n,10000,sc,14,2800000,1722902400,y,NA,hallway,after
+H1-36,H1,36,n,10000,sb,6,1200000,1722902400,y,NA,hallway,after
+H4-36,H4,36,p,10000,sc,126,25200000,1722902400,y,NA,hallway,after
+H4-36,H4,36,p,10000,sb,5,1e+06,1722902400,y,NA,hallway,after
+H4-36,H4,36,p,10000,bc,13,2600000,1722902400,y,NA,hallway,after
+H4-36,H4,36,n,1e+05,bc,1,2e+06,1722902400,y,NA,hallway,after
+H4-36,H4,36,n,1e+05,sc,12,2.4e+07,1722902400,y,NA,hallway,after
+H4-36,H4,36,n,1e+05,sb,7,1.4e+07,1722902400,y,NA,hallway,after
+H3-36,H3,36,p,1e+05,sc,49,9.8e+07,1722902400,y,NA,hallway,after
+H3-36,H3,36,n,1e+05,pink,1,2e+06,1722902400,y,NA,hallway,after
+H3-36,H3,36,n,1e+05,sc,47,9.4e+07,1722902400,y,NA,hallway,after
+H3-36,H3,36,n,1e+05,sb,61,1.22e+08,1722902400,y,NA,hallway,after
+H3-36,H3,36,n,1e+05,bc,1,2e+06,1722902400,y,NA,hallway,after
+P2-36,P2,36,p,10000,sc,18,3600000,1722902400,y,NA,patient,after
+P2-36,P2,36,n,1e+05,sc,26,5.2e+07,1722902400,y,NA,patient,after
+P2-36,P2,36,n,1e+05,sb,2,4e+06,1722902400,y,NA,patient,after
+P2-36,P2,36,n,1e+05,sc,1,2e+06,1722902400,y,NA,patient,after
+P10-36,P10,36,p,10000,sc,22,4400000,1722902400,y,NA,untreated,after
+P10-36,P10,36,n,10000,sc,71,14200000,1722902400,y,NA,untreated,after
+P10-36,P10,36,n,10000,sb,8,1600000,1722902400,y,NA,untreated,after
+P10-36,P10,36,n,10000,bb,4,8e+05,1722902400,y,NA,untreated,after
+H5-36,H5,36,n,10000,sc,61,12200000,1722902400,y,NA,hallway,after
+H5-36,H5,36,n,10000,sb,55,1.1e+07,1722902400,y,NA,hallway,after
+H5-36,H5,36,p,10000,sb,21,4200000,1722902400,y,NA,hallway,after
+H6-36,H6,36,p,10000,sc,70,1.4e+07,1722902400,y,NA,hallway,after
+H6-36,H6,36,n,10000,sc,209,41800000,1722902400,y,NA,hallway,after
+H6-36,H6,36,n,10000,bc,9,1800000,1722902400,y,NA,hallway,after
+H6-36,H6,36,n,10000,bb,5,1e+06,1722902400,y,NA,hallway,after
+H6-36,H6,36,n,10000,sb,1,2e+05,1722902400,y,NA,hallway,after
+H7-36,H7,36,p,1000,sc,45,9e+05,1722902400,y,NA,untreated,after
+H7-36,H7,36,n,10000,sc,86,17200000,1722902400,y,NA,untreated,after
+H7-36,H7,36,n,10000,bc,35,7e+06,1722902400,y,NA,untreated,after
+H7-36,H7,36,n,10000,sb,63,12600000,1722902400,y,NA,untreated,after
+P5-36,P5,36,n,10000,sc,85,1.7e+07,1722902400,y,NA,patient,after
+P5-36,P5,36,p,10000,sc,95,1.9e+07,1722902400,y,NA,patient,after
+H8-36,H8,36,n,10000,sc,175,3.5e+07,1722902400,y,NA,untreated,after
+H8-36,H8,36,n,10000,sb,41,8200000,1722902400,y,NA,untreated,after
+H8-36,H8,36,n,10000,bb,2,4e+05,1722902400,y,NA,untreated,after
+H8-36,H8,36,p,10000,sc,26,5200000,1722902400,y,NA,untreated,after
+H2-36,H2,36,n,10000,sb,1,2e+05,1722902400,y,NA,hallway,after
+H2-36,H2,36,n,1e+05,sc,26,5.2e+07,1722902400,y,NA,hallway,after
+H2-36,H2,36,n,1e+05,bc,2,4e+06,1722902400,y,NA,hallway,after
+H2-36,H2,36,p,1e+05,sc,22,4.4e+07,1722902400,y,NA,hallway,after
+P1-36,P1,36,n,10000,sc,97,19400000,1722902400,y,NA,patient,after
+P1-36,P1,36,n,10000,bc,5,1e+06,1722902400,y,NA,patient,after
+P1-36,P1,36,n,10000,sb,1,2e+05,1722902400,y,NA,patient,after
+P1-36,P1,36,n,10000,bb,3,6e+05,1722902400,y,NA,patient,after
+P1-36,P1,36,p,10000,sc,31,6200000,1722902400,y,NA,patient,after
+P1-36,P1,36,p,10000,bc,2,4e+05,1722902400,y,NA,patient,after
+P7-36,P7,36,p,10000,sc,78,15600000,1722902400,y,NA,untreated,after
+P7-36,P7,36,n,10000,sc,90,1.8e+07,1722902400,y,NA,untreated,after
+P7-36,P7,36,n,10000,sb,132,26400000,1722902400,y,NA,untreated,after
+P7-36,P7,36,n,10000,bc,1,2e+05,1722902400,y,NA,untreated,after
+P3-36,P3,36,p,10000,sc,39,7800000,1722902400,y,NA,patient,after
+P3-36,P3,36,n,10000,sc,54,10800000,1722902400,y,NA,patient,after
+P3-36,P3,36,n,10000,sb,24,4800000,1722902400,y,NA,patient,after
+P11-36,P11,36,p,10000,sc,12,2400000,1722902400,y,NA,untreated,after
+P11-36,P11,36,n,10000,sc,10,2e+06,1722902400,y,NA,untreated,after
+P11-36,P11,36,n,10000,sb,15,3e+06,1722902400,y,NA,untreated,after
+P6-36,P6,36,p,10000,sc,86,17200000,1722902400,y,NA,patient,after
+P6-36,P6,36,n,10000,sc,75,1.5e+07,1722902400,y,NA,patient,after
+P6-36,P6,36,n,10000,bc,11,2200000,1722902400,y,NA,patient,after
+P6-36,P6,36,n,10000,sb,25,5e+06,1722902400,y,NA,patient,after
+P9-36,P9,36,n,10000,sc,49,9800000,1722902400,y,NA,untreated,after
+P9-36,P9,36,n,10000,sb,30,6e+06,1722902400,y,NA,untreated,after
+P9-36,P9,36,p,10000,sc,25,5e+06,1722902400,y,NA,untreated,after
+P8-36,P8,36,n,10000,sc,13,2600000,1722902400,y,NA,untreated,after
+P8-36,P8,36,n,10000,sb,6,1200000,1722902400,y,NA,untreated,after
+P8-36,P8,36,p,10000,sc,28,5600000,1722902400,y,NA,untreated,after
+PC9-1,PC9,1,NA,NA,NA,NA,NA,NA,NA,NA,mc,NA
+PC8-1,PC8,1,NA,NA,NA,NA,NA,NA,NA,NA,mc,NA
+negswab-2,negswab,2,NA,NA,NA,NA,NA,NA,NA,NA,neg,NA
+negswab-3,negswab,3,NA,NA,NA,NA,NA,NA,NA,NA,neg,NA
