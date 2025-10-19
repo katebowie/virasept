@@ -94,7 +94,7 @@ Outside of the raw data, the processed data is as follows:
 
 ### Requirements for data processing
 
-1. Download files for [Pacbio HiFi MAG Pipeline]([https://example.com](https://github.com/PacificBiosciences/pb-metagenomics-tools/blob/master/docs/Tutorial-HiFi-MAG-Pipeline.md))
+1. Download files for [Pacbio HiFi MAG Pipeline](https://github.com/PacificBiosciences/pb-metagenomics-tools/blob/master/docs/Tutorial-HiFi-MAG-Pipeline.md)
 2. Anvio version 8
 3. Still under construction... 
 
