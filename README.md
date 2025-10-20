@@ -30,7 +30,7 @@
 <h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3><br>
 
   <p align="left">
-    Biofilms growing in the sink drains of healthcare facilities are known to harbor pathogens and to also be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
+Antimicrobial-resistant pathogens and their associated infections represent major public health threats in healthcare settings. In particular, biofilms that develop in sink drains can serve as reservoirs for many antimicrobial-resistant bacteria. Despite repeated efforts to disinfect and remove these drain biofilms, they inevitably regrow, and disinfection may influence the returning microbial communities and their resistance profiles. In this study, we combined culture-based and metagenomic approaches to investigate how drain disinfection affects microbial abundance, taxonomy, and antimicrobial resistance in operational hospital sinks. This work provides mechanistic insight into how disinfection shapes sink drain biofilm ecology and promotes the enrichment of antimicrobial resistance, with implications for infection prevention strategies in healthcare environments.    
     <br />
     <br />
     <br />
