@@ -46,6 +46,7 @@
     <li>
       <a href="#overview">Overview</a>
       <ul>
+        <li><a href="#terms">Terms</a></li>
         <li><a href="#dataset">Dataset</a></li>
         <li><a href="#data-files">Data Files</a></li>
       </ul>
@@ -75,12 +76,20 @@ All R scripts are HTMLs and should be run using R and RStudio. The code is numbe
 
 The raw data is available on the NCBI SRA (accession number: PRJNA1310651). 
 
+
+### Terms
+
+<u>ARGs</u> — antibiotic-resistance genes<br>
+<u>MAGs</u> — metagenome-assembled genomes
+
+
+
 ### Dataset
 
 We generated the following datasets for this study:
 * 24-hour culture colony counts for 156 sink drain biofilm samples 
 * shotgun metagenomic data from 119 biofilm samples
-* shotgun metagenomic data from 2 positive controls (mock community from Zymo)
+* shotgun metagenomic data from 2 positive controls (mock community from [Zymo](https://www.zymoresearch.com/collections/zymobiomics-microbial-community-standards/products/zymobiomics-microbial-community-standard))
 * shotgun metagenomic data from 2 negative controls
 * pacbio long-read metagenomic data from 24 biofilm samples
 
@@ -89,13 +98,13 @@ We generated the following datasets for this study:
 
 Outside of the raw data, the processed data is as follows:
 * CSV with metadata including colony counts from culture data --> [meta_deidentified](https://github.com/katebowie/virasept/blob/main/meta_deidentified.csv)
-* Antimicrobial resistance information for shotgun metagenomics --> [SR_AMR_deidentified](https://github.com/katebowie/virasept/blob/main/SR_merged_AMR_deidentified.csv)
+* ARG information for shotgun metagenomics --> [SR_AMR_deidentified](https://github.com/katebowie/virasept/blob/main/SR_merged_AMR_deidentified.csv)
 * CSV with metadata from pacbio long-read sequencing --> [pb_metadata](https://github.com/katebowie/virasept/blob/main/pb_metadata_deidentified.xlsx)
-* Antibiotic-Resistance Gene information for the pacbio long-read sequencing MAGs --> [rgi_output](https://github.com/katebowie/virasept/blob/main/all_rgi_output_parsed.csv)
+* ARG information for the pacbio long-read sequencing MAGs --> [rgi_output](https://github.com/katebowie/virasept/blob/main/all_rgi_output_parsed.csv)
 * Contig coverage of the MAGs for the pacbio long-read sequencing data --> [contig_coverage_summary](https://github.com/katebowie/virasept/blob/main/contig_coverage_summary.csv)
 * Plasmid coverage from the pacbio long-read sequencing --> [plasmid_contig_coverage](https://github.com/katebowie/virasept/blob/main/plasmid_contig_coverage.tsv)
 * Plasmid scores from the pacbio long-read sequencing --> [plasmid_scores](https://github.com/katebowie/virasept/blob/main/plasmid_scores.tsv)
-* Antibiotic-Resistance Gene information on plasmids from pacbio long-read sequencing --> [plasmid_ARGs](https://github.com/katebowie/virasept/blob/main/plasmid_ARGs.tsv)
+* ARG information on plasmids from pacbio long-read sequencing --> [plasmid_ARGs](https://github.com/katebowie/virasept/blob/main/plasmid_ARGs.tsv)
 * <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
 * Taxonomy table for shotgun metagenomics --> []()
 * OTU table for shotgun metagenomics --> []()
