@@ -89,6 +89,7 @@ We generated the following datasets for this study:
 
 Outside of the raw data, the processed data is as follows:
 * CSV with metadata including colony counts from culture data --> [meta_deidentified](https://github.com/katebowie/virasept/blob/main/meta_deidentified.csv)
+* Antimicrobial resistance information for shotgun metagenomics --> [SR_AMR_deidentified](https://github.com/katebowie/virasept/blob/main/SR_merged_AMR_deidentified.csv)
 * <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
 * Taxonomy table for shotgun metagenomics --> []()
 * OTU table for shotgun metagenomics --> []()
