@@ -80,8 +80,8 @@ The raw data is available on the NCBI SRA (accession number: PRJNA1310651).
 
 ### Terms
 
-<b>ARGs</b> — antibiotic-resistance genes<br>
-<b>MAGs</b> — metagenome-assembled genomes
+▫️<b>ARGs</b> — antibiotic-resistance genes<br>
+▫️<b>MAGs</b> — metagenome-assembled genomes <br><br>
 
 
 
@@ -92,7 +92,7 @@ We generated the following datasets for this study:
 * shotgun metagenomic data from 119 biofilm samples
 * shotgun metagenomic data from 2 positive controls (mock community from [Zymo](https://www.zymoresearch.com/collections/zymobiomics-microbial-community-standards/products/zymobiomics-microbial-community-standard))
 * shotgun metagenomic data from 2 negative controls
-* pacbio long-read metagenomic data from 24 biofilm samples
+* pacbio long-read metagenomic data from 24 biofilm samples<br><br>
 
 
 ### Data Files
