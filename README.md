@@ -67,7 +67,7 @@
 
 
 
-<!-- GETTING STARTED -->
+<!-- Overview -->
 ## Overview
 
 Here we have the code used to analyze data from our paper <i>"Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms"</i>. There are two categories of code here: bash scripts used to process the raw data, and the R code used for downstream analysis. 
@@ -76,11 +76,12 @@ All R scripts are HTMLs and should be run using R and RStudio. The code is numbe
 
 The raw data is available on the NCBI SRA (accession number: PRJNA1310651). 
 
+---
 
 ### Terms
 
-<u>ARGs</u> — antibiotic-resistance genes<br>
-<u>MAGs</u> — metagenome-assembled genomes
+<b>ARGs</b> — antibiotic-resistance genes<br>
+<b>MAGs</b> — metagenome-assembled genomes
 
 
 
@@ -108,7 +109,9 @@ Outside of the raw data, the processed data is as follows:
 * <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
 * Taxonomy table for shotgun metagenomics --> []()
 * OTU table for shotgun metagenomics --> []()
-  
+
+
+---
 
 ### Requirements for data processing
 
@@ -119,7 +122,7 @@ Outside of the raw data, the processed data is as follows:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+---
 
 <!-- CONTACT -->
 ## Contact
