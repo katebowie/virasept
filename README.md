@@ -27,7 +27,7 @@
     <img src="images/sink.png" alt="Logo" width="90" height="90">
   </a>
 
-<h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3>
+<h3 align="center">Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms</h3><br>
 
   <p align="left">
     Biofilms growing in the sink drains of healthcare facilities are known to harbor pathogens and to also be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
