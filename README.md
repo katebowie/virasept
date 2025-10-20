@@ -90,6 +90,10 @@ We generated the following datasets for this study:
 Outside of the raw data, the processed data is as follows:
 * CSV with metadata including colony counts from culture data --> [meta_deidentified](https://github.com/katebowie/virasept/blob/main/meta_deidentified.csv)
 * Antimicrobial resistance information for shotgun metagenomics --> [SR_AMR_deidentified](https://github.com/katebowie/virasept/blob/main/SR_merged_AMR_deidentified.csv)
+* Plasmid coverage from the pacbio long-read sequencing --> [plasmid_contig_coverage](https://github.com/katebowie/virasept/blob/main/plasmid_contig_coverage.tsv)
+* Plasmid scores from the pacbio long-read sequencing --> [plasmid_scores](https://github.com/katebowie/virasept/blob/main/plasmid_scores.tsv)
+* CSV with metadata from pacbio long-read sequencing --> [pb_metadata](https://github.com/katebowie/virasept/blob/main/pb_metadata_deidentified.xlsx)
+* Antibiotic-Resistance Gene information on plasmids from pacbio long-read sequencing --> [plasmid_ARGs](https://github.com/katebowie/virasept/blob/main/plasmid_ARGs.tsv)
 * <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
 * Taxonomy table for shotgun metagenomics --> []()
 * OTU table for shotgun metagenomics --> []()
@@ -109,7 +113,7 @@ Outside of the raw data, the processed data is as follows:
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
+Kate Bowie - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
 
 Project Link: [https://github.com/katebowie/virasept](https://github.com/katebowie/virasept)
 
