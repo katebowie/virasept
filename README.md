@@ -32,14 +32,8 @@
   <p align="left">
     Biofilms growing in the sink drains of healthcare facilities are known to harbor pathogens and to also be the source of hospital-acquired infections. Many are exploring disinfection strategies to control these biofilms, however the effects of such interventions have not been well studied. 
     <br />
-    <a href="https://github.com/katebowie/virasept"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/katebowie/virasept">View Demo</a>
-    &middot;
-    <a href="https://github.com/katebowie/virasept/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/katebowie/virasept/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -50,21 +44,18 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#overview">Overview</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#dataset">Dataset</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#requirements">Requirements</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
