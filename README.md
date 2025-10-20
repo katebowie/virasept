@@ -47,6 +47,7 @@
       <a href="#overview">Overview</a>
       <ul>
         <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#data-files">Data Files</a></li>
       </ul>
     </li>
     <li>
@@ -76,13 +77,22 @@ The raw data is available on the NCBI SRA (accession number: PRJNA1310651).
 
 ### Dataset
 
-Outside of the raw data, the processed data is as follows:
-* CSV with metadata including colony counts from culture data --> [meta_deidentified](https://github.com/katebowie/virasept/blob/main/meta_deidentified.csv)
-* <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
+We generated the following datasets for this study:
+* 24-hour culture colony counts for 156 sink drain biofilm samples 
 * shotgun metagenomic data from 119 biofilm samples
 * shotgun metagenomic data from 2 positive controls (mock community from Zymo)
 * shotgun metagenomic data from 2 negative controls
 * pacbio long-read metagenomic data from 24 biofilm samples
+
+
+### Data Files
+
+Outside of the raw data, the processed data is as follows:
+* CSV with metadata including colony counts from culture data --> [meta_deidentified](https://github.com/katebowie/virasept/blob/main/meta_deidentified.csv)
+* <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
+* Taxonomy table for shotgun metagenomics --> []()
+* OTU table for shotgun metagenomics --> []()
+  
 
 ### Requirements for data processing
 
