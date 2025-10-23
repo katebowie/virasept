@@ -146,7 +146,7 @@ Kate Bowie - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
 ## Acknowledgments
 
 * [The noun project](https://thenounproject.com) - sink at top by Nendra Wahyu Kuncoro from Noun Project (CC BY 3.0)
-* []()
+* Patients and staff at Yale New Haven Hospital
 * []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
