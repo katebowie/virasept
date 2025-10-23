@@ -139,8 +139,6 @@ To process the raw data:
 
 Kate Bowie - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
 
-Project Link: [https://github.com/katebowie/virasept](https://github.com/katebowie/virasept)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
