@@ -107,7 +107,6 @@ Outside of the raw data, the processed data is as follows:
 * Plasmid coverage from the pacbio long-read sequencing --> [plasmid_contig_coverage](https://github.com/katebowie/virasept/blob/main/plasmid_contig_coverage.tsv)
 * Plasmid scores from the pacbio long-read sequencing --> [plasmid_scores](https://github.com/katebowie/virasept/blob/main/plasmid_scores.tsv)
 * ARG information on plasmids from pacbio long-read sequencing --> [plasmid_ARGs](https://github.com/katebowie/virasept/blob/main/plasmid_ARGs.tsv)
-* <i>The remaining processed data files are too big for github. We are in the process of hosting them on a different website and will update ASAP</i>
 * Taxonomy table for shotgun metagenomics --> []()
 * OTU table for shotgun metagenomics --> []()
 
@@ -127,7 +126,7 @@ To process the raw data:
 
 1. Download files for [Pacbio HiFi MAG Pipeline](https://github.com/PacificBiosciences/pb-metagenomics-tools/blob/master/docs/Tutorial-HiFi-MAG-Pipeline.md)
 2. Anvio version 8
-3. Still under construction... 
+3. Above configuration scripts will detail necessary conda packages. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
