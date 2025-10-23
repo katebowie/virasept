@@ -49,6 +49,7 @@ Antimicrobial-resistant pathogens and their associated infections represent majo
         <li><a href="#terms">Terms</a></li>
         <li><a href="#dataset">Dataset</a></li>
         <li><a href="#data-files">Data Files</a></li>
+        <li><a href="#scripts">Scripts</a></li>
       </ul>
     </li>
     <li>
