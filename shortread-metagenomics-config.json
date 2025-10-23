@@ -1,0 +1,138 @@
+{
+    "workflow_name": "metagenomics",
+    "config_version": "3",
+    "samples_txt": "samples_groups.txt",
+    
+    "anvi_script_reformat_fasta": {
+        "run": true,
+        "--prefix": "{group}",
+        "--simplify-names": true,
+        "--keep-ids": "",
+        "--exclude-ids": "",
+        "--min-len": "",
+        "--seq-type": "",
+        "threads": 8
+    },
+    
+    "krakenuniq": {
+        "threads": 1,
+        "--gzip-compressed": false,
+        "additional_params": "",
+        "run": true,
+        "--db": "/vast/palmer/pi/gerstein/krb62/DBDIR"
+    },
+    
+    "megahit": {
+        "--min-contig-len": 500,
+        "--memory": "",
+        "threads": 12,
+        "run": true,
+        "--continue": ""
+    },
+
+    "iu_filter_quality_minoche": {
+        "run": true,
+        "--ignore-deflines": true,
+        "--visualize-quality-curves": "",
+        "--limit-num-pairs": "",
+        "--print-qual-scores": "",
+        "--store-read-fate": "",
+        "threads": 8
+    },
+
+    "gzip_fastqs": {
+        "run": false,
+        "threads": 8
+    },
+
+    "bowtie": {
+        "additional_params": "--no-unal",
+        "threads": 12
+    },
+
+    "anvi_init_bam": {
+        "threads": 8
+    },
+
+    "annotate_contigs_database": {
+        "threads": 8
+    },
+
+    "anvi_run_kegg_kofams": {
+        "run": true,
+        "threads": 12,
+        "--kegg-data-dir": "/home/krb62/.conda/envs/anvio-8/lib/python3.10/site-packages/anvio/data/misc/KEGG",
+        "--hmmer-program": "",
+        "--keep-all-hits": "",
+        "--log-bitscores": "",
+        "--just-do-it": true
+    },
+    
+    "anvi_cluster_contigs": {
+        "--collection-name": "{driver}",
+        "run": true,
+        "--driver": "concoct",
+        "--just-do-it": true,
+        "--additional-params-concoct": "",
+        "--additional-params-metabat2": "",
+        "--additional-params-maxbin2": "",
+        "--additional-params-dastool": "",
+        "--additional-params-binsanity": "",
+        "threads": 8
+    },
+    
+    "anvi_summarize": {
+        "additional_params": "",
+        "run": false,
+        "threads": 6
+    },
+
+    "anvi_profile": {
+        "threads": 8,
+        "--sample-name": "{sample}",
+        "--overwrite-output-destinations": true,
+        "--report-variability-full": "",
+        "--skip-SNV-profiling": "",
+        "--profile-SCVs": "",
+        "--description": "",
+        "--skip-hierarchical-clustering": "",
+        "--distance": "",
+        "--linkage": "",
+        "--min-contig-length": "",
+        "--min-mean-coverage": "",
+        "--min-coverage-for-variability": "",
+        "--cluster-contigs": "",
+        "--contigs-of-interest": "",
+        "--queue-size": "",
+        "--write-buffer-size-per-thread": "",
+        "--fetch-filter": "",
+        "--min-percent-identity": "",
+        "--max-contig-length": ""
+    },
+    
+    "anvi_run_hmms": {
+        "run": true,
+        "threads": 5,
+        "--also-scan-trnas": true,
+        "--installed-hmm-profile": "",
+        "--hmm-profile-dir": ""
+    },
+    
+    "anvi_run_scg_taxonomy": {
+        "run": true,
+        "threads": 6,
+        "--scgs-taxonomy-data-dir": ""
+    },
+    
+    "output_dirs": {
+        "FASTA_DIR": "/vast/palmer/scratch/gerstein/krb62/02_FASTA",
+        "CONTIGS_DIR": "03_CONTIGS",
+        "QC_DIR": "01_QC",
+        "MAPPING_DIR": "/vast/palmer/scratch/gerstein/krb62/04_MAPPING",
+        "PROFILE_DIR": "/vast/palmer/scratch/gerstein/krb62/05_ANVIO_PROFILE",
+        "MERGE_DIR": "06_MERGED",
+        "TAXONOMY_DIR": "/vast/palmer/scratch/gerstein/krb62/07_TAXONOMY",
+        "SUMMARY_DIR": "08_SUMMARY",
+        "LOGS_DIR": "00_LOGS"
+    }
+}
