@@ -106,7 +106,7 @@ Outside of the raw data, the processed data is as follows:
 * Plasmid coverage from the pacbio long-read sequencing --> [plasmid_contig_coverage](https://github.com/katebowie/virasept/blob/main/plasmid_contig_coverage.tsv)
 * Plasmid scores from the pacbio long-read sequencing --> [plasmid_scores](https://github.com/katebowie/virasept/blob/main/plasmid_scores.tsv)
 * ARG information on plasmids from pacbio long-read sequencing --> [plasmid_ARGs](https://github.com/katebowie/virasept/blob/main/plasmid_ARGs.tsv)
-* Taxonomy table for shotgun metagenomics --> [updated_otu](http://files.gersteinlab.org/public-docs/2025/10.23/updated_otu.csv)
+* Taxonomy table for shotgun metagenomics --> [updated_otu](http://files2.gersteinlab.org/public-docs/2025/10.23/updated_otu.csv)
 * OTU table for shotgun metagenomics --> [SR_full_taxonomy_table](http://files2.gersteinlab.org/public-docs/2025/10.23/SR_new_full_taxonomy_table.tsv)
 
 
