@@ -1,0 +1,948 @@
+---
+title: "v_longread_analysis"
+author: "Kate Bowie"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: journal
+    highlight: kate
+    toc: TRUE
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Libraries
+```{r}
+
+library(ggplot2)
+library(readxl)
+library(here)
+library(tidyverse)
+library(patchwork)
+library(readr)
+library(phyloseq)
+library(microshades)
+library(ape)
+library(pheatmap)
+library(vegan)
+library(ggpubr)
+library(rstatix)
+library(cowplot)
+library(RColorBrewer)
+library(viridis)
+library(ggalluvial)
+library(ggplotify)
+library(ComplexHeatmap)  
+library(circlize)        
+library(grid)   
+library(gridExtra)
+
+```
+
+
+# load data
+```{r}
+
+arg_db <- read_csv(file = here("Data", "all_rgi_output_parsed.csv"), col_names = TRUE)
+tax_db <- read_csv(file = here("Data", "updated_compiled_gtdbtk_summary_with_trees.csv"), col_names = TRUE)
+seq_meta <- read_excel(here("Data", "pb_metadata_deidentified.xlsx"), col_names = TRUE)
+meta <- read_csv(file = here("Data", "meta_deidentified.csv"), col_names = TRUE)
+cov_map <- read_csv(file = here("Data", "contig_coverage_summary.csv"), col_names = TRUE)
+
+load(here("Data", "rpkm_plot.RData"))
+
+```
+
+
+
+# cleaning up
+```{r}
+
+meta$sample_name <- meta$sample_id
+meta <- meta %>% 
+  select(sample_name, room, day, room_type, before_after) %>% 
+  unique()
+
+arg_db <- arg_db %>% 
+  select(-(ORF_ID)) %>% 
+  mutate(barcode = Sample_Name) %>% 
+  select(-(Sample_Name))
+
+
+tax_clean <- tax_db %>%
+  mutate(barcode = Sample_Name) %>% 
+  select(-(Sample_Name)) %>% 
+  mutate(classification = str_replace_all(classification, "(\\w)__", "")) %>%
+  separate(classification,
+           into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+           sep = ";",
+           fill = "right", 
+           remove = FALSE)
+
+
+```
+
+
+
+# fixing semibin name
+```{r}
+
+arg_db <- arg_db %>% 
+  mutate(new_contig = str_remove(Contig, "_\\d+$"))
+
+arg_db$old_id <- arg_db$MAG_Identifier
+
+
+arg_db <- arg_db %>%
+  rowwise() %>%
+  mutate(MAG_Identifier = if_else(
+    any(str_detect(tax_clean$Contig_Names, new_contig) & tax_clean$barcode == barcode),
+    tax_clean$MAG_Identifier[which(str_detect(tax_clean$Contig_Names, new_contig) & tax_clean$barcode == barcode)][1],
+    NA_character_
+  )) %>%
+  ungroup()
+
+arg_db <- arg_db %>% 
+  mutate(ARG_length = Stop - Start)
+
+
+```
+
+
+```{r}
+
+tax_clean$MAG_ID <- paste0(tax_clean$MAG_Identifier, "_", tax_clean$barcode)
+arg_db$MAG_ID <- paste0(arg_db$MAG_Identifier, "_", arg_db$barcode)
+
+```
+
+
+# combine things!
+```{r}
+
+test <- merge(arg_db, tax_clean, by = c("barcode", "MAG_Identifier", "MAG_ID"), all = TRUE)
+full_meta <- merge(seq_meta, meta, by = "sample_name")
+df <- merge(test, full_meta, by = "barcode", all.x = TRUE)
+remove(test, arg_db, tax_db, meta, seq_meta, full_meta)
+
+
+```
+
+
+# adding coverage
+```{r}
+
+df <- df %>%
+  mutate(Contig_Names = strsplit(Contig_Names, ",\\s*")) %>% 
+  rowwise() %>%
+  mutate(Coverage = list(
+    cov_map %>%
+      filter(sample == barcode, contig_id %in% Contig_Names) %>%
+      pull(avg_coverage)
+  )) %>%
+  ungroup() %>% 
+  mutate(MAG_coverage = map_dbl(Coverage, ~ if (length(.x) > 0) mean(.x) else NA_real_)) %>% 
+  select(-(Polymerase_read_length), -(median_HiFi_Read_Quality), -(barcode_quality), -(Contig_Depths), -(old_id))
+
+```
+
+
+
+```{r}
+
+# adding abundance
+temp <-  df %>% 
+  select(barcode, MAG_Identifier, MAG_coverage, Genome_Size, HiFi_Yield_bp) %>%
+  unique() %>% 
+  mutate(rel_abund = (MAG_coverage*Genome_Size/HiFi_Yield_bp)*100,
+         sample_bp = Genome_Size*MAG_coverage)
+
+temp_agg <- temp %>% 
+  group_by(barcode) %>% 
+  summarise(total_bp = sum(sample_bp))
+
+
+df <- merge(df, temp, by = c("barcode", "MAG_Identifier", "MAG_coverage", "Genome_Size", "HiFi_Yield_bp"))
+
+df <- merge(df, temp_agg, by = "barcode")
+
+rm(temp, cov_map, temp_agg)
+
+```
+
+ 
+
+
+```{r}
+
+# adding abundance and rpk
+temp <-  df %>% 
+  select(barcode, MAG_coverage, total_bp, ARG_length, MAG_ID, Best_Hit_ARO) %>%
+  group_by(barcode, MAG_ID, Best_Hit_ARO) %>% 
+  summarise(ARG_coverage = ARG_length*MAG_coverage) %>% 
+  ungroup()
+
+df <- merge(df, temp, by = c("barcode", "Best_Hit_ARO"))
+df <- df %>% 
+  mutate(ARG_rel_abund = (ARG_coverage/total_bp)*100)
+
+
+
+df <- df %>% 
+  mutate(ARG_density = ARG_coverage / Genome_Size,
+         weighted_ARG = ARG_density * rel_abund / 100) # rel_abund is percent, so divide by 100
+
+# Sum weighted ARG per sample
+df_sample_ARG <- df %>%
+  group_by(barcode) %>%
+  summarise(total_weighted_ARG = sum(weighted_ARG, na.rm = TRUE))
+
+
+
+```
+
+
+
+# Coverage
+```{r}
+
+df$before_after_f <- factor(df$before_after, levels = c("before", "after"))
+df <- df %>% 
+  mutate(growth = case_when(
+    before_after_f == "before" ~ "before",
+    before_after_f == "after" ~ "regrowth"
+  ))
+
+df$MAG_ID <- df$MAG_ID.x
+df <- df %>% 
+  select(-(MAG_ID.y), -(MAG_ID.x))
+
+df %>% 
+  select(MAG_ID, barcode, Genome_Size, MAG_coverage, before_after) %>% 
+  unique()
+
+ggplot(df, aes(x = Genome_Size, y = MAG_coverage)) + 
+  geom_point() +
+  theme_bw() +
+  xlab("MAG Size") +
+  ylab("Coverage")
+
+```
+
+
+# No species fix
+```{r}
+
+df <- df %>%
+  mutate(
+    Species = case_when(
+      !(is.na(Species) | Species == "") ~ Species,
+      (is.na(Species) | Species == "") & !(is.na(Genus) | Genus == "") ~ paste0(Genus, " spp"),
+      (is.na(Species) | Species == "") & (is.na(Genus) | Genus == "") & !(is.na(Family) | Family == "") ~ paste0(Family, " spp"),
+      TRUE ~ Species))
+
+
+```
+
+
+
+# MAG overview
+### before/after treatment
+```{r}
+
+mag_summary <- df %>%
+  group_by(before_after, room) %>%
+  unique() %>% 
+  summarise(
+    total_MAGs = n_distinct(MAG_ID))
+
+
+
+# Average MAGs
+sum(mag_summary$total_MAGs)/24
+
+# standard dev
+sd(mag_summary$total_MAGs)
+
+
+```
+
+
+```{r}
+
+mag_summary %>% 
+  ggplot(., aes(x = before_after, y = total_MAGs, colour = before_after)) +
+  geom_boxplot() +
+  theme_bw() + 
+  xlab("") +
+  ylab("total MAGs")
+
+
+# stats
+shapiro.test(mag_summary$total_MAGs) # non-normal
+
+
+# sinks are paired
+wilcox.test(mag_summary$total_MAGs ~ mag_summary$before_after)
+
+```
+
+
+
+
+
+# Taxonomy overview
+### Phylum
+```{r}
+
+df %>% 
+  select(barcode, Phylum, MAG_ID, before_after_f, rel_abund, room, sample_name, growth) %>% 
+  unique() %>% 
+  group_by(Phylum) %>% 
+  ggplot(., aes(x = sample_name, y = rel_abund/100, fill = Phylum)) + 
+  geom_col() +
+  theme_bw() +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_brewer(palette = "Paired") + 
+  facet_grid(~growth, scales = "free") +
+  ylab("Relative Abundance") + xlab("Sample")
+
+```
+
+
+
+### Genus
+```{r}
+
+temp <- df %>% 
+  mutate(Abundance = rel_abund)
+
+plot_obj <- temp %>% 
+  select(barcode, Phylum, before_after_f, room, Genus, Abundance, room_type, growth, sample_name) %>% 
+  mutate(Abundance = Abundance/100) %>% 
+  unique() %>%
+  create_color_dfs(., group_level = "Phylum", subgroup_level = "Genus", selected_groups = c("Bacteroidota", "Pseudomonadota", "Actinomycetota", "Bacillota"))
+
+
+
+new_groups <- extend_group(plot_obj$mdf, plot_obj$cdf, "Phylum", "Genus", "Pseudomonadota", existing_palette = "micro_orange", new_palette = "micro_cvd_orange", n_add = 5)
+
+new_groups$mdf <- new_groups$mdf %>%
+  rename(Sample = sample_name)
+
+cust_legend <- custom_legend(new_groups$mdf, new_groups$cdf, group_level = "Phylum", subgroup_level = "Genus", legend_orientation = "horizontal")
+
+
+taxa_plot <- plot_microshades(new_groups$mdf, new_groups$cdf, x = "Sample", group_label = "Phylum-Genus") + 
+  theme_bw() +
+  facet_wrap(~growth, scales = "free_x") + 
+  theme_bw() +
+  ylab("Relative Abundance") + 
+  theme(axis.text.x = element_blank(), legend.position = "none") + 
+  xlab("Sample") + 
+  ylim(0,1) 
+
+mag_taxa <- taxa_plot / cust_legend
+mag_taxa
+
+```
+
+
+# Species plot
+```{r}
+
+plot_obj <- temp %>% 
+  filter(!(is.na(Best_Hit_ARO))) %>% 
+  select(barcode, Phylum, Species, Abundance,growth, sample_name) %>%
+  mutate(Abundance = Abundance/100) %>% 
+  unique() %>%
+  create_color_dfs(., group_level = "Phylum", subgroup_level = "Species", selected_groups = c("Bacteroidota", "Pseudomonadota", "Actinomycetota", "Bacillota"))
+
+
+
+new_groups <- extend_group(plot_obj$mdf, plot_obj$cdf, "Phylum", "Species", "Pseudomonadota", existing_palette = "micro_orange", new_palette = "micro_cvd_orange", n_add = 5)
+
+new_groups$mdf <- new_groups$mdf %>%
+  rename(Sample = sample_name)
+
+cust_legend <- custom_legend(new_groups$mdf, new_groups$cdf, group_level = "Phylum", subgroup_level = "Species", legend_orientation = "horizontal")
+
+
+taxa_plot <- plot_microshades(new_groups$mdf, new_groups$cdf, x = "Sample", group_label = "Phylum-Species") + 
+  theme_bw() +
+  facet_wrap(~growth, scales = "free_x") + 
+  theme_bw() +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank(), legend.position = "none") +
+  ylab("Relative Abundance") + 
+  xlab("Sample") + ylim(0,1)
+
+mag_taxa_s <- taxa_plot / cust_legend
+
+```
+
+
+
+## top species
+```{r}
+
+
+temp <- df %>%
+  select(sample_name, Species, rel_abund, Genus, Family, growth) %>% 
+  mutate(Species_temp = case_when(
+    !is.na(Species) & Species != "" ~ Species,
+    !is.na(Genus) & Genus != "" ~ paste0(Genus, " sp."),
+    !is.na(Family) & Family != "" ~ paste0(Family, " sp."),
+    Species == Species ~ Species
+  ))
+
+
+top_species <- temp %>%
+  select(sample_name, Species_temp, rel_abund) %>% 
+  distinct() %>% 
+  group_by(Species_temp) %>%
+  summarise(rel_abund = sum(rel_abund), .groups = "drop") %>% 
+  ungroup() %>% 
+  group_by(Species_temp) %>% 
+  arrange(desc(rel_abund)) %>% 
+  ungroup() %>% 
+  select(Species_temp) %>% unique() %>% slice(1:20)
+
+
+df_aggregated <- temp %>%
+  select(sample_name, Species_temp, rel_abund) %>% 
+  filter(Species_temp %in% top_species$Species_temp) %>% 
+  group_by(sample_name, Species_temp) %>%
+  summarise(rel_abund = log10(sum(rel_abund) + 1e-6), .groups = "drop") %>% 
+  ungroup() %>% 
+  unique()
+
+
+
+temp$growth <- factor(temp$growth, levels = c("before", "regrowth"))
+
+ordered_samples <- temp %>%
+  distinct(sample_name, growth) %>%      
+  arrange(growth) %>%       
+  pull(sample_name)                 
+
+
+```
+
+
+
+### Most abundant
+```{r}
+
+# Genera
+df %>% 
+  group_by(Genus) %>% 
+  summarize(
+    total_cov = sum(MAG_coverage)) %>% 
+  arrange(desc(total_cov)) %>% 
+  slice(1:4)
+
+
+# Species
+df %>% 
+  group_by(Species) %>% 
+  summarize(
+    total_cov = sum(MAG_coverage)) %>% 
+  arrange(desc(total_cov)) %>% 
+  slice(1:4)
+
+```
+
+
+# MAGs with ARGs
+```{r}
+
+mags_without_args <- df %>%
+  filter(is.na(Best_Hit_ARO)) %>%
+  select(MAG_ID, growth) %>%
+  distinct() # 24 with ARGs
+
+abund_ARG_mags <- df %>%
+  filter(!(MAG_ID %in% mags_without_args$MAG_ID))
+
+
+MAG_args <- abund_ARG_mags %>%
+  select(growth, MAG_ID, rel_abund, barcode) %>% 
+  unique() %>% 
+  group_by(growth, barcode) %>%
+  summarise(ARG_MAG_abund = sum(rel_abund), .groups = "drop",
+            MAG_count = n_distinct(MAG_ID))
+
+MAG_arg_plot <- ggplot(MAG_args, aes(x = growth, y = ARG_MAG_abund/100)) + 
+  geom_boxplot() +
+  ylab("Rel. Abundance") + 
+  theme_bw() + xlab("") + ylim(0,1)
+
+stat.test <- MAG_args %>% 
+  wilcox_test(ARG_MAG_abund ~ growth)
+
+Fig4b <- MAG_arg_plot + stat_pvalue_manual(stat.test, label = "p", y.position = .90)
+
+```
+
+
+
+
+### Carbapenam
+```{r}
+
+mags_with_args <- df %>%
+  filter(!(is.na(Best_Hit_ARO))) %>%
+  filter(map_lgl(`Drug Class`, ~ any(str_detect(.x, "carbapenem")))) %>% 
+  select(MAG_ID, growth) %>%
+  distinct()
+
+abund_ARG_mags <- df %>%
+  filter(MAG_ID %in% mags_with_args$MAG_ID)
+
+
+MAG_args <- abund_ARG_mags %>%
+  select(growth, MAG_ID, rel_abund, barcode) %>% 
+  unique() %>% 
+  group_by(growth, barcode) %>%
+  summarise(ARG_MAG_abund = sum(rel_abund), .groups = "drop",
+            MAG_count = n())
+
+MAG_arg_plot <- ggplot(MAG_args, aes(x = growth, y = MAG_count)) + 
+  geom_boxplot() +
+  ylab("MAG Count") + 
+  theme_bw() + xlab("")
+
+stat.test <- MAG_args %>% 
+  wilcox_test(MAG_count ~ growth)
+
+MAG_arg_plot + stat_pvalue_manual(stat.test, label = "p", y.position = 10)
+
+```
+Alright, so this does not hold for MAGs with carbapenem-associated ARGs. 
+
+
+
+
+# Figure Mock-up
+```{r}
+
+arg_boxplots <- plot_grid(rpkm_sr_plot, plot_spacer(), Fig4b, labels = c("A","", "B"), nrow = 1, rel_widths = c(1,0.3,1))
+
+Fig4_top <- plot_grid(arg_boxplots, mag_taxa_s, labels = c("", "C"), nrow = 2, rel_heights = c(1.1, 2))
+
+```
+
+
+
+# ARG Overview
+```{r}
+
+unique(df$Best_Hit_ARO) # 96 ARGs
+
+# avg ARGS per MAG
+arg_counts <- df %>%
+  count(barcode, MAG_ID, name = "ARGs_per_MAG")
+mean(arg_counts$ARGs_per_MAG)
+sd(arg_counts$ARGs_per_MAG)
+
+
+# Resistance Mech
+df %>%
+  mutate(Resistance_List = str_split(`Resistance Mechanism`, ";\\s*")) %>%
+  unnest(Resistance_List) %>%
+  distinct(Resistance_List) %>%
+  count(Resistance_List, sort = TRUE)
+# Not going to count NA as a mechanism, so 6 separate mechanisms
+
+
+# Drug class
+df %>%
+  mutate(Drug_Class_List = str_split(`Drug Class`, ";\\s*")) %>%
+  unnest(Drug_Class_List) %>%
+  distinct(Drug_Class_List) %>%
+  count(Drug_Class_List, sort = TRUE)
+# not counting NA, so 27 separate drug classes
+
+
+```
+
+
+### Overall ARG summary
+```{r}
+
+arg_summary <- df %>%
+  group_by(growth, room) %>%
+  summarise(
+    total_ARGs = n(),
+    unique_ARGs = n_distinct(Best_Hit_ARO),
+    unique_Drug_Classes = n_distinct(`Drug Class`),
+    unique_AMR = n_distinct(AMR_Gene_Family),
+    unique_Resist = n_distinct(`Resistance Mechanism`),
+    unique_MAG = n_distinct(MAG_ID),
+    unique_ARG_norm = unique_ARGs/unique_MAG,
+    tot_ARG_norm = total_ARGs/unique_MAG,
+    .groups = "drop"
+  )
+
+
+# stats 
+shapiro.test(arg_summary$unique_ARG_norm[arg_summary$growth == "before"])
+
+shapiro.test(arg_summary$unique_ARG_norm[arg_summary$growth == "regrowth"])
+
+
+wilcox.test(total_ARGs ~ growth, data = arg_summary)
+
+
+num_args <- arg_summary %>% 
+  ggplot(., aes(x = growth, y = total_ARGs)) + 
+  geom_boxplot() + 
+  theme_bw() + xlab("") + ylab("Number of ARGs") + ylim(0, 700)
+
+
+stat.test <- arg_summary %>% 
+  wilcox_test(total_ARGs ~ growth)
+
+num_args + stat_pvalue_manual(stat.test, label = "p", y.position = 680)
+
+```
+
+
+
+### most abundant ARGs
+```{r}
+
+top_args <- df %>% 
+  select(Best_Hit_ARO, ARG_rel_abund) %>% 
+  distinct() %>% 
+  group_by(Best_Hit_ARO) %>% 
+  summarise(tot_ARG_abund = sum(ARG_rel_abund)) %>% 
+  arrange(desc(tot_ARG_abund)) %>% 
+  slice(1:30)
+
+
+head(top_args)
+
+
+
+top_carb_args <- df %>% 
+  filter(map_lgl(`Drug Class`, ~ any(str_detect(.x, "carbapenem")))) %>% 
+  select(Best_Hit_ARO, ARG_rel_abund) %>% 
+  distinct() %>% 
+  group_by(Best_Hit_ARO) %>% 
+  summarise(tot_ARG_abund = sum(ARG_rel_abund)) %>% 
+  arrange(desc(tot_ARG_abund))
+
+
+head(top_args)
+
+
+```
+
+
+
+```{r}
+
+ggplot(arg_summary, aes(x = growth, y = unique_ARG_norm, colour = growth)) + 
+  geom_boxplot() + theme_bw()
+
+# stats 
+shapiro.test(arg_summary$unique_ARG_norm[arg_summary$growth == "before"])
+
+shapiro.test(arg_summary$unique_ARG_norm[arg_summary$growth == "regrowth"])
+
+
+wilcox.test(unique_ARG_norm ~ growth, data = arg_summary)
+
+```
+
+
+
+
+# Heatmap of ARG catagories in species
+```{r}
+
+# Define resistance mechanism categories
+direct_carb <- c("OXA-2", "OXA-674", "SGM-7", "SGM-6")
+efflux <- c("adeF","acrB","acrD","acrA","emrB","emrR","mdtB","mdtC",
+            "smeA","smeD","smeE","smeF","smeR","oqxA","oqxB","marA",
+            "baeR","CRP","Pseudomonas aeruginosa soxR",
+            "Acinetobacter baumannii AmvA","Acinetobacter baumannii AbaQ",
+            "Escherichia coli AcrAB-TolC with MarR mutations conferring resistance to ciprofloxacin and tetracycline",
+            "mdeA","leuO", "Shigella flexneri acrA")
+
+
+ESBLs_AmpC <- c( "BlaB-38","BlaB-34", "BlaB-25", "BlaB-9", "CME-2", "CME-3", "GOB-23", "GOB-29", "GOB-13", "OXA-347", "Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics")
+#porins <- c("OmpA","Klebsiella pneumoniae KpnE","Klebsiella pneumoniae KpnF","Klebsiella pneumoniae KpnG")
+
+aminoglycoside <- c(
+  "AAC(6')-IIa", "aadS", "ANT(2'')-Ia", "AAC(6')-Iv", "aadA27",
+  "AAC(6')-Iak", "APH(9)-Ic", "AAC(6')-Ib'", "AAC(3)-IIIc", "aadA", "AAC(6')-Iap")
+
+fosfomycin <- c(
+  "Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin",
+  "Escherichia coli GlpT with mutation conferring resistance to fosfomycin",
+  "Escherichia coli UhpT with mutation conferring resistance to fosfomycin",
+  "fosA5", "FosA8", "FosXCC", "FosI")
+qac <- c("qacG", "qacL", "qacJ")
+
+# Add mech_type classification
+df_resist <- df %>%
+  filter(!(is.na(Best_Hit_ARO))) %>% 
+  mutate(
+    Best_Hit_ARO_clean = str_trim(Best_Hit_ARO),
+    mech_type = case_when(
+      Best_Hit_ARO_clean %in% direct_carb ~ "Carbapenemase",
+      Best_Hit_ARO_clean %in% efflux ~ "Efflux",
+      #Best_Hit_ARO_clean %in% porins ~ "Porin",
+      Best_Hit_ARO_clean %in% ESBLs_AmpC ~ "ESBL/AmpC",
+      Best_Hit_ARO_clean %in% aminoglycoside ~ "Aminoglycozide",
+      Best_Hit_ARO_clean %in% fosfomycin ~ "Fosfomycin",
+      Best_Hit_ARO_clean %in% qac ~ "QAC",
+      TRUE ~ "Other"),
+    rel_abund_frac = rel_abund/100)
+
+
+# Summarize number of MAGs per species/growth/mech
+species_table <- df_resist %>%
+  group_by(Species, MAG_ID, mech_type, growth) %>% 
+  summarise(rel_abund_MAG = sum(rel_abund_frac), .groups = "drop") %>%
+  #distinct() %>%
+  #summarise(present = 1, .groups = "drop") %>%
+  distinct() %>%
+  group_by(Species, growth, mech_type) %>%
+  #summarise(n_MAGs_with_mech = n(), .groups = "drop") %>%
+  #pivot_wider(names_from = mech_type, values_from = n_MAGs_with_mech, values_fill = 0) %>% 
+  summarise(total_rel_abund = sum(rel_abund_MAG), .groups = "drop") %>%
+  pivot_wider(names_from = mech_type, values_from = total_rel_abund, values_fill = 0)
+
+
+species_table <- species_table %>%
+  mutate(growth = factor(growth, levels = c("before", "regrowth"))) %>% 
+  rowwise() %>%
+  mutate(total_abund = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(total_abund)) %>%
+  slice_head(n = 40) %>%   # keep top 50
+  select(-total_abund)
+
+
+# Create rownames again
+rownames_mat <- paste(species_table$Species, species_table$growth, sep="_")
+mat <- as.matrix(species_table[,-c(1,2)])
+rownames(mat) <- rownames_mat
+
+growth_factor <- factor(species_table$growth, levels = c("before", "regrowth"))
+
+
+# Pretty labels
+pretty_labels <- gsub("_(before|regrowth)$", "", rownames(mat))
+
+# Colors for before/regrowth
+growth_colors <- c("before" = "#CBDCD2", "regrowth" = "#DEC3C6")
+
+# Row annotation (strip next to row names)
+row_anno <- rowAnnotation(
+  Phase = growth_factor,
+  col = list(Phase = growth_colors),
+  width = unit(4, "mm"),
+  show_annotation_name = FALSE)
+
+
+mat_sqrt <- sqrt(mat)
+
+# Draw heatmap
+clust_hm <- Heatmap(
+  mat_sqrt,
+  name = "square-root \ntransformed \nrel. Abundance \nof MAGs",
+  col = colorRamp2(c(0, max(mat_sqrt)), c("white", "dodgerblue")),
+  show_row_names = TRUE,
+  show_column_names = TRUE,
+  cluster_rows = FALSE,
+  row_split = growth_factor,
+  row_labels = pretty_labels,
+  row_title = NULL,
+  row_title_side = "left",
+  column_names_gp = gpar(fontsize = 10),
+  right_annotation = row_anno,
+  row_names_gp = gpar(fontsize = 8, fontface = "italic"),
+  column_names_rot = -45
+)
+
+# Capture as grob for plot_grid
+ht_grob <- grid.grabExpr(draw(clust_hm))
+
+
+```
+
+
+
+## Efflux pump stuff:
+```{r}
+
+df_mag_efflux <- df_resist %>%
+  group_by(sample_name, growth, MAG_ID, Species, room) %>%
+  summarise(has_efflux = any(mech_type == "Efflux"), .groups = "drop")
+
+
+mag_efflux_growth <- df_mag_efflux %>%
+  group_by(growth, sample_name) %>%
+  summarise(
+    total_MAGs = n(),
+    MAGs_with_efflux = sum(has_efflux),
+    perc_with_efflux = 100 * MAGs_with_efflux / total_MAGs,
+    .groups = "drop")
+
+wilcox.test(perc_with_efflux ~ growth, data = mag_efflux_growth)
+
+total_MAGs <- nrow(df_mag_efflux)
+MAGs_with_efflux <- sum(df_mag_efflux$has_efflux)
+
+perc_MAGs_with_efflux <- 100 * MAGs_with_efflux / total_MAGs
+perc_MAGs_with_efflux
+
+
+
+mag_efflux_species <- df_mag_efflux %>%
+  group_by(Species, growth) %>%
+  summarise(
+    total_MAGs = n(),
+    MAGs_with_efflux = sum(has_efflux),
+    perc_with_efflux = 100 * MAGs_with_efflux / total_MAGs,
+    .groups = "drop")
+
+
+wilcox.test(perc_with_efflux ~ growth, data = mag_efflux_species)
+
+ggplot(mag_efflux_species, aes(x = growth, y = MAGs_with_efflux)) + geom_boxplot()
+
+
+
+df_species <- df_resist %>%
+  group_by(Species) %>%
+  summarise(has_efflux = any(mech_type == "Efflux"), .groups = "drop")
+
+total_species <- nrow(df_species)
+species_with_efflux <- sum(df_species$has_efflux)
+
+perc_species_with_efflux <- 100 * species_with_efflux / total_species
+perc_species_with_efflux
+
+
+```
+
+
+
+
+```{r}
+
+arg_abund <- df_resist %>%
+  filter(mech_type == "Efflux") %>% 
+  distinct(MAG_ID, new_contig, Start, Stop, room, growth, Best_Hit_ARO, Species) %>%
+  count(growth, Best_Hit_ARO,name = "total_count")
+
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Acinetobacter baumannii AmvA"] <- "A.baumannii AmvA"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Acinetobacter baumannii AbaQ"] <- "A.baumannii AbaQ"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Escherichia coli UhpT with mutation conferring resistance to fosfomycin"] <- "e.coli UhpT"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Escherichia coli AcrAB-TolC with MarR mutations conferring resistance to ciprofloxacin and tetracycline"] <- "e.coli AcrAB-TolC"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin"] <- "e.coli EF-Tu"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Escherichia coli GlpT with mutation conferring resistance to fosfomycin"] <- "e.coli GlpT"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics"] <- "PBP3"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Mycobacterium tuberculosis rpoC mutations confer resistance to rifampicin"] <- "m.tuberculosis rpoC"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Pseudomonas aeruginosa soxR"] <- "P.aeruginosa soxR"
+
+arg_abund$Best_Hit_ARO[arg_abund$Best_Hit_ARO == "Shigella flexneri acrA"] <- "s.flexneri acrA"
+
+arg_abund_plot <- arg_abund %>%
+  pivot_wider(names_from = growth, values_from = total_count, values_fill = list(total_count = 0)) %>% 
+  group_by(Best_Hit_ARO) %>% 
+  summarise(plot_count = regrowth - before) %>% 
+  filter(abs(plot_count) > 1)
+
+
+arg_dif_plot <- arg_abund_plot %>% 
+  filter(plot_count != 0) %>% 
+  ggplot(., aes(x = Best_Hit_ARO, y = plot_count, fill = plot_count > 0)) +
+  scale_fill_manual(values = c("TRUE" = "#DEC3C6", "FALSE" = "#CBDCD2"),
+                    labels = c("Before", "Regrowth")) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "ARG Counts", x = "Efflux Pump ARGs", fill = "phase") +
+  theme_bw() #+ theme(legend.position = "none")
+
+
+species_arg <- df %>%
+  #filter(map_lgl(`Drug Class`, ~ any(str_detect(.x, "carbapenem")))) %>%
+  filter(Best_Hit_ARO %in% c("adeF", "Pseudomonas aeruginosa soxR")) %>%
+  distinct(MAG_ID, new_contig, Start, Stop, growth, Best_Hit_ARO, Species) %>%
+  count(Species, growth, Best_Hit_ARO,name = "count")
+
+species_filt <- species_arg %>% 
+  filter(!(Best_Hit_ARO == "adeF" & count <= 2))
+
+species_plot <- ggplot(species_filt, aes(x = Species, y = count, fill = growth)) +
+  geom_col(position = "dodge") +
+  facet_wrap(~Best_Hit_ARO, scales = "free", nrow = 2) +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("before" = "#CBDCD2", "regrowth" = "#DEC3C6"),
+                    labels = c("before" = "Before", "regrowth" = "Regrowth")) +
+  labs(y = "ARG Counts", x = "")
+
+```
+
+
+# Final Figures
+```{r}
+
+load(file = here("Data", "plasmid_boxplot.RData"))
+rm(list = setdiff(ls(), c("plasmid_count", "prop_carb", "Fig4_top", "ht_grob", "arg_dif_plot", "rpkm_sr_plot", "Fig4b", "mag_taxa_s")))
+
+white_spacer <- ggdraw() + 
+  theme(plot.background = element_rect(fill = "white", color = NA))
+
+arg_boxplots <- plot_grid(rpkm_sr_plot, white_spacer, Fig4b, labels = c("A", "", "B"), nrow = 3, rel_heights = c(1, 0.2, 1))
+
+#Fig4_top <- plot_grid(arg_boxplots, mag_taxa_s, labels = c("", "C"), nrow = 2, rel_heights = c(1.1, 2))
+
+Fig4_half <- plot_grid(arg_boxplots, ht_grob, ncol = 2, labels = c("", "C"), rel_widths = c(.6, 1.5))
+
+# fixing the letter thing
+plasmid_count_f<- plot_grid(white_spacer, plasmid_count, labels = c("E", ""), rel_widths = c(0.1,1))
+prop_carb_f<- plot_grid(white_spacer, prop_carb, labels = c("F", ""), rel_widths = c(0.1,1))
+plasmid <- plot_grid(plasmid_count_f, prop_carb_f, labels = c("", ""), nrow = 2)
+
+efflux_boxplots <- plot_grid(arg_dif_plot, plasmid, labels = c("D", ""), nrow = 1, rel_widths = c(2, 1.2))
+
+Fig4 <- plot_grid(Fig4_half, efflux_boxplots, nrow = 2, rel_heights = c(2,1))
+
+ggsave("my_plot_large.png",
+       plot = Fig4,
+       width = 9,      # in inches
+       height = 10,      # in inches
+       dpi = 300)       # good for publication
+
+
+ggsave("longread_barplot.png",
+       plot = mag_taxa_s,
+       width = 9,      # in inches
+       height = 5,      # in inches
+       dpi = 300)       # good for publication
+
+
+```
+
+

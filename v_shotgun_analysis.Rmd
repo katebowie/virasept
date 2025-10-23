@@ -1,0 +1,921 @@
+---
+title: "v_shotgun_analysis"
+author: "Kate Bowie"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: journal
+    highlight: kate
+    toc: TRUE
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Libraries
+```{r}
+
+library(ggplot2)
+library(readxl)
+library(here)
+library(cowplot)
+library(tidyverse)
+library(patchwork)
+library(readr)
+library(phyloseq)
+library(microshades)
+library(ape)
+library(vegan)
+library(ggpubr)
+library(rstatix)
+library(RColorBrewer)
+library(maaslin3)
+library(writexl)
+
+```
+
+
+
+# Load in data
+```{r}
+
+load(here("Data", "shortread_ps.RData"))
+
+```
+
+
+
+```{r}
+
+rm(ps_clean) # don't need this
+
+```
+
+
+
+# Overview
+```{r}
+
+mdf_prep <- prep_mdf(ps_decon, subgroup_level = "phylum")
+
+mdf_prep <- mdf_prep %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated")
+
+
+# plotting
+color_df <- create_color_dfs(mdf_prep, group_level = "phylum", subgroup_level = "family", selected_groups = c("Pseudomonadota", "Actinomycetota", "Bacteroidota", "Bacillota"))
+
+pseudo_order <- reorder_samples_by(color_df$mdf, color_df$cdf, order = "Pseudomonadota", group_level = "phylum", subgroup_level = "family", sink_abundant_groups = FALSE)
+
+plot_microshades(pseudo_order$mdf, pseudo_order$cdf, group_label = "phylum", x = "new_id") + 
+  theme_bw() +
+  facet_wrap(~growth, scales = "free") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank()) + ylab("Relative Abundance") + xlab("Samples")
+
+```
+
+
+### phylum-genus stacked plot
+```{r}
+
+mdf_prep <- prep_mdf(ps_decon, subgroup_level = "genus")
+
+mdf_prep <- mdf_prep %>% 
+  filter(before_after != "NA")
+
+top_p <- mdf_prep %>% 
+  group_by(phylum) %>% 
+  summarise(abund = sum(Abundance)) %>% 
+  arrange(desc(abund))
+head(top_p)
+
+
+# plotting
+color_df <- create_color_dfs(mdf_prep, group_level = "phylum", subgroup_level = "genus", selected_groups = c("Pseudomonadota", "Actinomycetota", "Bacteroidota", "Bacillota"), cvd = TRUE)
+
+# extending the Pseudomonadota color palette
+new_groups <- extend_group(color_df$mdf, color_df$cdf, "phylum", "genus", "Pseudomonadota", existing_palette = "micro_cvd_orange", new_palette = "micro_orange", n_add = 5)
+
+pseudo_order <- reorder_samples_by(new_groups$mdf, new_groups$cdf, order = "Pseudomonadota", group_level = "phylum", subgroup_level = "genus", sink_abundant_groups = FALSE)
+
+cust_legend <- custom_legend(new_groups$mdf, new_groups$cdf, group_level = "phylum", subgroup_level = "genus", legend_orientation = "horizontal")
+
+taxa_plot <- new_groups$mdf %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>%
+  plot_microshades(., pseudo_order$cdf, group_label = "Phylum-Genus", x = "new_id") + 
+  theme_bw() +
+  facet_grid(~growth, scales = "free") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank(), legend.position = "none") + 
+  ylab("Relative Abundance") + 
+  xlab("")
+
+figure3 <- plot_grid(taxa_plot, cust_legend, nrow = 2, rel_heights = c(2,1))
+
+```
+
+#### hallway v patient
+```{r}
+
+taxa_plot_hp <- new_groups$mdf %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>%
+  plot_microshades(., pseudo_order$cdf, group_label = "Phylum-Genus", x = "new_id") + 
+  theme_bw() +
+  facet_wrap(room_type~growth, scales = "free") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank(), legend.position = "none") + 
+  ylab("Relative Abundance") + 
+  xlab("samples")
+
+plot_grid(taxa_plot_hp, cust_legend, nrow = 2, rel_heights = c(3,1))
+
+```
+
+#### Untreated sinks
+Using same color palette as above
+```{r}
+
+#cust_legend <- custom_legend(new_groups$mdf, new_groups$cdf, group_level = "phylum", subgroup_level = "genus", legend_orientation = "vertical")
+
+
+taxa_plot_un <- new_groups$mdf %>% 
+  filter(room_type == "untreated") %>% 
+  plot_microshades(., pseudo_order$cdf, group_label = "Phylum-Genus", x = "new_id") + 
+  theme_bw() +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank()) + 
+  theme(legend.position = "none") +
+  ylab("Relative Abundance") + 
+  facet_wrap(~room_type) +
+  xlab("samples") + ylab("")
+
+#figure3_untreated <- plot_grid(taxa_plot_un, cust_legend, nrow = 1, rel_widths = c(1.5,1))
+
+taxa_plots <- plot_grid(taxa_plot, taxa_plot_un, nrow = 1, labels = c("A", "B"), rel_widths = c(4,1))
+
+new_figure3 <- plot_grid(taxa_plots, cust_legend, nrow = 2, rel_heights = c(2,1))
+
+```
+
+
+
+### Taxa Overview
+```{r}
+
+ps_nomc <- ps_decon %>% 
+  subset_samples(., sample_type != "mc" & sample_type != "neg")
+ps_nomc <- subset_taxa(ps_nomc, taxa_sums(ps_nomc) >0)
+
+taxa_counts <- ps_nomc@tax_table %>% data.frame()
+
+taxa_counts <- lapply(taxa_counts, unique)
+taxa_counts <- lapply(taxa_counts, function(x) x[!is.na(x)]) # removing all NAs from each level
+
+print(lengths(taxa_counts))
+
+```
+
+#### Top Phylum
+```{r }
+
+ps_n <- transform_sample_counts(ps_nomc,function(x) 100* x/sum(x))
+ps_n_phy <- tax_glom(ps_n, "phylum")
+ps_n_phy  <- subset_taxa(ps_n_phy, taxa_sums(ps_n_phy) >0)
+mdf_phy <- psmelt(ps_n_phy)
+
+summary_phylum <- mdf_phy %>%
+        group_by(phylum) %>%
+        summarise(rank_abundance = sum(Abundance), mean_abundance = mean(Abundance), median_abundance = median(Abundance), min_abundance = min(Abundance), max_abundance = max(Abundance)) %>%
+        arrange(desc(rank_abundance)) %>%
+        mutate(order = row_number()) %>%
+        ungroup()
+
+head(summary_phylum)
+
+```
+
+
+#### Top Genera
+```{r}
+
+ps_nomc_g <- ps_nomc %>% 
+  tax_glom(., "genus")
+ps_nomc_g <- subset_taxa(ps_nomc_g, taxa_sums(ps_nomc_g)>0)
+
+
+mdf_g <- psmelt(ps_nomc_g)
+
+summary_genus <- mdf_g %>%
+        group_by(genus) %>%
+        summarise(rank_abundance = sum(Abundance), mean_abundance = mean(Abundance), median_abundance = median(Abundance), min_abundance = min(Abundance), max_abundance = max(Abundance)) %>%
+        arrange(desc(rank_abundance)) %>%
+        mutate(order = row_number()) %>%
+        ungroup()
+
+head(summary_genus)
+
+
+```
+
+#### hallway v patient
+```{r}
+
+mdf_hall <- mdf_g %>%
+  filter(room_type == "hallway") %>% 
+  filter(Abundance > 0) %>%
+        group_by(genus, room_type) %>%
+        summarise(rank_abundance = sum(Abundance), mean_abundance = mean(Abundance), median_abundance = median(Abundance), min_abundance = min(Abundance), max_abundance = max(Abundance)) %>%
+        arrange(desc(rank_abundance)) %>%
+        mutate(order = row_number()) %>% 
+  ungroup()
+
+mdf_pat <- mdf_g %>%
+  filter(room_type == "patient") %>% 
+  filter(Abundance > 0) %>% 
+        group_by(genus, room_type) %>%
+        summarise(rank_abundance = sum(Abundance), mean_abundance = mean(Abundance), median_abundance = median(Abundance), min_abundance = min(Abundance), max_abundance = max(Abundance)) %>%
+        arrange(desc(rank_abundance)) %>%
+        mutate(order = row_number()) %>% 
+  ungroup()
+
+head(mdf_hall$genus)
+
+head(mdf_pat$genus)
+setdiff(mdf_hall$genus, mdf_pat$genus)
+
+```
+
+
+
+# Alpha div
+```{r}
+
+# first agglomerate to genus level for confidence
+ps_decon_g <- ps_decon %>% 
+  tax_glom(., "genus")
+
+
+meta <- meta %>% 
+  mutate(estimate_richness(ps_decon_g, measures = c("Observed", "Shannon", "InvSimpson", "Chao1")))
+
+
+sample_data(ps_decon_g) <- meta
+
+
+
+# overall
+# there are more after samples, so these are uneven groups
+inv_plot <- meta %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  ggplot(., aes(x = growth, y = InvSimpson, colour = growth)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  xlab("") +
+  ylab("Diversity") +
+  theme_bw() + ylim(0,54) + 
+  scale_colour_manual(values = c("before" = "#66997B", "after" = "#c1af8e", "regrowth" = "#CC727B")) +
+  theme(legend.position = "none", axis.text.x = element_text(color = c("#66997B", "#c1af8e", "#CC727B")))
+
+
+meta %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  ggplot(., aes(x = growth, y = Shannon)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  theme_bw()
+
+meta %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  ggplot(., aes(x = growth, y = Observed)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  theme_bw()
+
+
+# per room
+meta %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  ggplot(., aes(x = growth, y = InvSimpson)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  facet_wrap(~room, scales = "free") +
+  theme_bw() + ggtitle("Alpha Diversity with Virasept Treatment")
+
+```
+
+### stats
+```{r}
+
+meta_temp <- meta %>% 
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated")
+kruskal.test(InvSimpson ~ growth, data = meta_temp)
+
+stat.test <- meta_temp %>%
+  filter(!is.na(growth)) %>% 
+  mutate(growth = droplevels(growth)) %>% 
+  pairwise_wilcox_test(InvSimpson ~ growth,
+    p.adjust.method = "fdr")
+
+adiv <- inv_plot + stat_pvalue_manual(stat.test, label = "p.adj", y.position = c(39, 47, 52))
+
+```
+
+
+### alpha div table
+```{r}
+
+alpha_long <- meta %>%
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  filter(!(is.na(growth))) %>%
+  filter(!(is.na(room_type))) %>% 
+  pivot_longer(cols = c("Observed", "Shannon", "InvSimpson", "Chao1"), 
+               names_to = "metric", values_to = "value")
+
+
+alpha_long %>%
+  group_by(growth, metric) %>%
+  summarise(median = median(value, na.rm = TRUE), IQR = IQR(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(summary = paste0(round(median, 2), " (IQR: ", round(IQR, 2), ")")) %>%
+  select(growth, metric, summary) %>%
+  pivot_wider(names_from = growth, values_from = summary)
+
+# IQR
+alpha_long %>%
+  group_by(metric, growth) %>%
+  summarise(
+    median = median(value, na.rm = TRUE),
+    q1 = quantile(value, 0.25, na.rm = TRUE),
+    q3 = quantile(value, 0.75, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr_range = paste0(round(q1, 2), ",", round(q3, 2))) %>% 
+  select(metric, growth, iqr_range)
+
+
+
+alpha_long %>%
+  group_by(metric) %>%
+  summarise(
+    p_value = kruskal.test(value ~ growth)$p.value,
+    .groups = "drop"
+  ) %>%
+  mutate(
+    p_value = signif(p_value, 3),
+    p_adj = signif(p.adjust(p_value, method = "BH"), 3))
+
+
+
+```
+
+
+### hallway v patient
+```{r}
+
+alpha_long <- meta %>%
+  filter(!(is.na(before_after))) %>% 
+  filter(room_type != "untreated") %>% 
+  filter(!(is.na(growth))) %>%
+  filter(!(is.na(room_type))) %>% 
+  pivot_longer(cols = c("Observed", "Shannon", "InvSimpson", "Chao1"), 
+               names_to = "metric", values_to = "value")
+
+
+alpha_long %>%
+  group_by(growth, metric, room_type) %>%
+  summarise(median = median(value, na.rm = TRUE), IQR = IQR(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(summary = paste0(round(median, 2), " (IQR: ", round(IQR, 2), ")")) %>%
+  select(growth, metric, summary, room_type) %>%
+  pivot_wider(names_from = growth, values_from = summary)
+
+# IQR
+alpha_long %>%
+  group_by(metric, growth) %>%
+  summarise(
+    median = median(value, na.rm = TRUE),
+    q1 = quantile(value, 0.25, na.rm = TRUE),
+    q3 = quantile(value, 0.75, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr_range = paste0(round(q1, 2), ",", round(q3, 2))) %>% 
+  select(metric, growth, iqr_range)
+
+
+
+alpha_long %>%
+  group_by(metric, growth) %>%
+  summarise(
+    p_value = kruskal.test(value ~ room_type)$p.value,
+    .groups = "drop"
+  ) %>%
+  mutate(
+    p_value = signif(p_value, 3),
+    p_adj = signif(p.adjust(p_value, method = "BH"), 3))
+
+```
+
+
+
+# Beta div
+```{r}
+
+ps_beta <- ps_decon_g %>% 
+  subset_samples(., before_after != "NA") %>% 
+  subset_samples(., room_type != "untreated")
+ps_beta <- subset_taxa(ps_beta, taxa_sums(ps_beta)>0)
+
+
+# need to set a seed
+set.seed(1208)
+
+meta_beta <- data.frame(ps_beta@sam_data)
+
+
+```
+
+
+
+
+### Subsetting to before/regrowth
+```{r}
+
+
+meta <- meta %>% 
+  mutate(sink = case_when(
+    room_type %in% c("hallway", "patient") ~ "treated",
+    sample_type == "untreated" ~ "untreated"
+  ))
+
+sample_data(ps_decon_g) <- meta
+
+
+ps_treated <- ps_decon_g %>% 
+  subset_samples(., room != "negswab") %>% 
+  subset_samples(., growth != "after") %>% 
+  subset_samples(., sample_type != "untreated") %>% 
+  subset_samples(., sample_type != "mc")
+ps_treated <- subset_taxa(ps_treated, taxa_sums(ps_treated)>0)
+
+ps_ord <- ordinate(ps_treated, method = "PCoA", distance = "bray")
+
+beta_div_plot <- plot_ordination(ps_treated, ps_ord, color = "growth") + 
+  geom_point(size = 2) +                    
+  stat_ellipse(aes(group = growth, color = growth), 
+               linetype = "dashed", size = 1) + theme_bw()
+
+
+# stats
+dist_bray <- distance(ps_treated, method = "bray")
+meta_treated <- data.frame(ps_treated@sam_data)
+
+adonis2(dist_bray ~ growth, data = meta_treated, permutations = 999)
+
+
+```
+
+### hallway v patient comparisons
+```{r}
+
+# before
+ps_b <- ps_beta %>% 
+  subset_samples(., growth == "before")
+ps_b <- subset_taxa(ps_b, taxa_sums(ps_b)>0)
+
+bray_b <- distance(ps_b, method = "bray")
+meta_b <- data.frame(ps_b@sam_data)
+adonis2(bray_b ~ room_type, data = meta_b, permutations = 999)
+
+
+# after
+ps_a <- ps_beta %>% 
+  subset_samples(., growth == "after")
+ps_a <- subset_taxa(ps_a, taxa_sums(ps_a)>0)
+
+bray_a <- distance(ps_a, method = "bray")
+meta_a <- data.frame(ps_a@sam_data)
+adonis2(bray_a ~ room_type, data = meta_a, permutations = 999)
+
+
+
+# regrowth
+ps_r <- ps_beta %>% 
+  subset_samples(., growth == "regrowth")
+ps_r <- subset_taxa(ps_r, taxa_sums(ps_r)>0)
+
+bray_r <- distance(ps_r, method = "bray")
+meta_r <- data.frame(ps_r@sam_data)
+adonis2(bray_r ~ room_type, data = meta_r, permutations = 999)
+
+```
+
+
+
+# clean
+```{r}
+
+rm(color_df, cust_legend, mdf_g, mdf_phy, meta_temp, ord_df, p, ps_hall, ps_n, ps_n_phy, ps_ord, ps_pat, pseudo_order, summary_genus, summary_phylum, taxa_counts, taxa_plot, top_p, axes_perc, ps_treated)
+
+```
+
+
+
+# Maaslin3
+```{r}
+
+otu <- data.frame(ps_beta@otu_table)
+meta <- data.frame(ps_beta@sam_data)
+
+
+fit_data <- maaslin3(
+  input_data = otu,
+  input_metadata = meta,
+  output = "maaslin3_output",
+  fixed_effects = c("growth"),
+  random_effects = c("room", "room_type"),
+  normalization = "TSS",
+  transform = "LOG",
+  standardize = TRUE,
+  verbosity = "ERROR"
+)
+
+
+
+```
+
+
+### filtering and czid
+```{r}
+
+sig_abund_joint <- subset(fit_data$fit_data_abundance$results, qval_joint < 0.05)
+sig_prev_joint <- subset(fit_data$fit_data_prevalence$results, qval_joint < 0.05)
+
+sig_feats <- union(sig_abund_joint$feature, sig_prev_joint$feature)
+top_feat <- sig_abund_joint %>% 
+  filter(feature %in% sig_feats) %>% 
+  arrange(qval_joint)
+
+ps_rel <- transform_sample_counts(ps_beta, function(x) 100* x/sum(x))
+ps_temp <- psmelt(ps_rel)
+ps_temp$feature <- ps_temp$OTU
+top_feat <- merge(top_feat, ps_temp, by = "feature")
+
+
+
+```
+
+
+
+### plotting it
+```{r}
+
+plot_df <- fit_data$normalized %>%
+  select(all_of(top_feat$feature)) %>%
+  mutate(sample_id = rownames(.)) %>%
+  pivot_longer(cols = -sample_id, names_to = "feature", values_to = "abundance") %>%
+  left_join(fit_data$metadata %>% mutate(sample_id = rownames(.)), by = "sample_id")
+
+top_feat_unique <- top_feat %>% distinct(feature, .keep_all = TRUE)
+plot_df <- plot_df %>%
+  left_join(top_feat_unique[, c("feature", "genus")], by = "feature")
+
+# still working on this
+top_feat %>% 
+  unique() %>% 
+  arrange(qval_joint) %>% 
+  slice(1:20)
+
+cup_plot <- plot_df %>% 
+  filter(genus == "Cupriavidus") %>% 
+  ggplot(., aes(x = growth, y = abundance, colour = growth)) +
+  theme_minimal() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2, size = 1, alpha = 0.6) +
+  scale_colour_manual(values = c("before" = "#66997B", "after" = "#c1af8e", "regrowth" = "#CC727B")) +
+  theme(legend.position = "none", plot.title = element_text(face = "italic"), axis.text.x = element_text(color = c("#66997B", "#c1af8e", "#CC727B"))) +
+  labs(title = "Cupriavidus",
+       y = "Relative Abundance", x = "") + ylim(0,.9)
+
+
+plot_df$location <- "H"
+plot_df$location[plot_df$room_type == "patient"] <- "P"
+
+pseud_plot <- plot_df %>% 
+  filter(genus == "Pseudomonas") %>% 
+  ggplot(aes(x = location, y = abundance, colour = growth)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2, size = 1, alpha = 0.6) +
+  facet_wrap(~growth, scales = "free_x", strip.position = "bottom") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "italic"), strip.text = element_blank()) +
+  scale_colour_manual(values = c("before" = "#66997B", "after" = "#c1af8e", "regrowth" = "#CC727B")) +
+  labs(title = "Pseudomonas",
+       y = "", x = "") + ylim(0,.9)
+
+```
+
+
+#### stats
+```{r}
+
+# Cupriavidus
+stat.test <- plot_df %>%
+  filter(genus == "Cupriavidus") %>% 
+  pairwise_wilcox_test(
+    abundance ~ growth,
+    p.adjust.method = "fdr")
+
+c_plot <- cup_plot + stat_pvalue_manual(stat.test, label = "p.adj", y.position = c(0.55, 0.65, 0.75))
+
+
+
+# Pseudomonas
+pseud <- plot_df %>% 
+  filter(genus == "Pseudomonas")
+
+wilcox_test(pseud, abundance ~ room_type)
+
+stat.test <- plot_df %>%
+  filter(genus == "Pseudomonas") %>% 
+  group_by(growth) %>% 
+  pairwise_wilcox_test(
+    abundance ~ location,
+    p.adjust.method = "fdr")
+
+p_plot <- pseud_plot + stat_pvalue_manual(stat.test, label = "p.adj", y.position = c(0.7, 0.7, 0.7))
+
+
+
+```
+
+
+
+
+### Volcano plot
+```{r}
+
+sig_abund_joint <- subset(fit_data$fit_data_abundance$results, qval_joint < 0.05)
+sig_prev_joint <- subset(fit_data$fit_data_prevalence$results, qval_joint < 0.05)
+
+sig_feats <- union(sig_abund_joint$feature, sig_prev_joint$feature)
+top_feat <- sig_abund_joint %>% 
+  filter(feature %in% sig_feats) %>% 
+  arrange(qval_joint)
+
+mean_abund <- rowMeans(ps_rel@otu_table[top_feat$feature, ])
+top_feat$mean_abund <- mean_abund
+
+test <- left_join(top_feat, top_feat_unique, by = "feature")
+
+b_rg <- test %>% 
+  filter(name.x == "growthregrowth") %>% 
+  filter(genus != "Moritella")
+
+b_a <- test %>% 
+  filter(name.x == "growthafter")
+
+
+b_rg$label_it <- ifelse(b_rg$genus %in% c("Cupriavidus", "Ralstonia", "Burkholderia", "Pseudomonas", "Alcaligenes", "Stenotrophomonas"), b_rg$genus, NA)
+
+
+volc <- ggplot(b_rg, aes(
+    x = coef.x,
+    y = -log10(qval_joint.x),
+    color = coef.x > 0,
+    size = mean_abund)) +
+  geom_point() +
+  geom_text(aes(label = label_it), vjust = -1, size = 3, na.rm = TRUE, show.legend = FALSE, fontface = "italic") +
+  scale_color_manual(values = c("#66997B", "#CC727B"), labels = c("Before", "Regrowth")) +
+  scale_size_continuous(range = c(1, 5)) +
+  labs(
+    title = "",
+    x = "Effect Size (MaAsLin3 coefficient)",
+    y = "-log10(q-value)",
+    color = "Enriched",
+    size = "Mean Rel. \nAbundance (%)"
+  ) +
+  theme_minimal() + coord_cartesian(clip = "off")
+
+```
+
+
+# Final figures
+```{r}
+
+
+middle_row <- plot_grid(c_plot, p_plot, adiv, labels = c("C", "D", "E"), nrow = 1, rel_widths = c(1, 1.6, 1))
+
+top_fig3 <- plot_grid(new_figure3, middle_row, ncol = 1, rel_heights = c(2.2, 1.2))
+
+fig3 <- plot_grid(top_fig3, volc, labels = c("", "F"), nrow = 2, rel_heights = c(4, 2))
+
+ggsave("Fig3.eps", fig3, device = "eps", width = 12, height = 11, units = "in")
+
+ggsave("Figure_3.jpeg",
+       plot = fig3,
+       width = 8.7,      # in inches
+       height = 10,      # in inches
+       dpi = 300)       # good for publication
+
+```
+
+
+# Formatting table for MaAslin3
+```{r}
+
+mas_table <- test %>% 
+  select(name.x, qval_joint.x, mean_abund, genus) %>% 
+  filter(qval_joint.x > 0) %>% 
+  filter(genus != "Moritella") %>% # moritella removed 
+  arrange(qval_joint.x) %>%  
+  slice(1:21)
+
+write_xlsx(mas_table, "maaslin3_table.xlsx")
+
+```
+
+
+# clean up
+```{r}
+
+rm(list = setdiff(ls(), c("meta","ps_decon", "ps_decon_g")))
+
+```
+
+
+
+# Pathogen specific Analysis
+```{r}
+
+
+czid <- read_tsv(file = here("Data", "CZ_ID_pathogen_list_2024.tsv"), col_names = TRUE)
+
+czid$genus <- stringr::word(czid$taxon_name, start = 1)
+
+ps_path <- ps_decon_g %>% 
+  subset_taxa(., genus %in% czid$genus)
+
+path_df <- psmelt(ps_path)
+
+
+```
+
+
+### Number throughout growth phases
+```{r}
+
+path_df %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  select(genus, growth, room, room_type, sample_id) %>% 
+  distinct() %>% 
+  group_by(growth, sample_id, room_type) %>% 
+  summarise(count = n()) %>% 
+  ggplot(., aes(x = growth, y = count)) + 
+  geom_boxplot() +
+  #facet_wrap(~room_type, scales = "free") +
+  theme_bw()
+
+
+
+path_df %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  select(genus, growth, room, room_type, sample_id) %>% 
+  distinct() %>% 
+  group_by(sample_id) %>% 
+  summarise(count = n()) %>% 
+  summarise(median = median(count, na.rm = TRUE),
+    q1 = quantile(count, 0.25, na.rm = TRUE),
+    q3 = quantile(count, 0.75, na.rm = TRUE))
+
+
+
+```
+
+
+```{r}
+
+mdf_g <- prep_mdf(ps_decon_g, subgroup_level = "genus")
+
+
+top_path <- mdf_g %>% 
+  filter(genus %in% czid$genus) %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  select(genus, Abundance, growth, room_type, sample_id) %>% 
+  group_by(genus) %>% 
+  summarise(sum_abund = sum(Abundance), med_abund = median(Abundance)) %>% 
+  arrange(desc(sum_abund)) %>% 
+  slice(1:20)
+
+
+```
+
+
+
+```{r}
+
+path_plot <- mdf_g %>% 
+  filter(genus %in% czid$genus) %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  select(genus, Abundance, growth, room_type, sample_id) %>% 
+  group_by(growth, sample_id, room_type) %>% 
+  summarise(sum_abund = sum(Abundance)) %>% 
+  ggplot(., aes(x = growth, y = sum_abund)) + 
+  geom_boxplot() +
+  #facet_wrap(~room_type, scales = "free_x") +
+  theme_bw() + 
+  ylab("Rel. Abundance of Pathogens") + xlab("") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"))
+
+
+
+path_summary <- mdf_g %>% 
+  filter(genus %in% czid$genus) %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  select(genus, Abundance, growth, room_type, sample_id, room) %>% 
+  group_by(growth, sample_id, room_type, room) %>% 
+  summarise(sum_abund = sum(Abundance)) %>% 
+  droplevels()
+
+library(lme4)
+library(lmerTest)
+lmer_fit <- lmer(sum_abund ~ growth + room_type + (1|room), data = path_summary)
+summary(lmer_fit)
+
+
+
+```
+
+
+```{r}
+
+sum_fit <- summary(lmer_fit)
+
+# Fixed effects table
+fixed_eff <- sum_fit$coefficients
+
+
+# Difference
+diff_est <- fixed_eff["growthafter","Estimate"] - fixed_eff["growthregrowth","Estimate"]
+
+# Standard error of difference
+diff_se <- sqrt(fixed_eff["growthafter","Std. Error"]^2 + fixed_eff["growthregrowth","Std. Error"]^2)
+
+# t-value
+diff_t <- diff_est / diff_se
+
+# p-value (two-sided)
+diff_p <- 2*pt(-abs(diff_t), df=min(fixed_eff[,"df"]))
+
+
+stat.test <- data.frame(
+  group1 = c("before","before","after"),
+  group2 = c("after","regrowth","regrowth"),
+  p.adj = c(
+    fixed_eff["growthafter","Pr(>|t|)"],    # before vs after
+    fixed_eff["growthregrowth","Pr(>|t|)"], # before vs regrowth
+    diff_p),                                   # after vs regrowth
+  y.position = c(0.7,0.8,0.9))
+
+stat.test$p.adj <- round(stat.test$p.adj, 4)
+
+path_plot + stat_pvalue_manual(stat.test, label = "p.adj")
+
+```
+
+
+## prepping a table
+```{r}
+
+path_table <- mdf_g %>% 
+  filter(genus %in% czid$genus) %>% 
+  filter(Abundance > 0) %>% 
+  filter(!(is.na(room_type))) %>% 
+  filter(sample_type != "mc" & sample_type != "neg") %>% 
+  group_by(growth, genus) %>% 
+  summarise(med_rel = median(Abundance)) %>% 
+  pivot_wider(., names_from = growth, values_from = med_rel)
+
+write_xlsx(path_table, "pathogen_table.xlsx")
+
+```
+

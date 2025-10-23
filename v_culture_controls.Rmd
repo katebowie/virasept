@@ -1,0 +1,728 @@
+---
+title: "v_culture_controls"
+author: "Kate Bowie"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: journal
+    highlight: kate
+    toc: TRUE
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Libraries
+```{r}
+
+library(ggplot2)
+library(readxl)
+library(here)
+library(cowplot)
+library(tidyverse)
+library(patchwork)
+library(readr)
+library(phyloseq)
+library(microshades)
+library(ape)
+library(vegan)
+library(ggpubr)
+library(rstatix)
+library(RColorBrewer)
+
+```
+
+
+
+# load data
+```{r}
+
+tax_df <- read_tsv(file = here("Data", "SR_new_full_taxonomy_table.tsv"), col_names = TRUE)
+
+otu_df <- read_csv(file = here("Data", "updated_otu.csv"), col_names = TRUE)
+
+
+meta <- read_csv(file = here("Data", "meta_deidentified.csv"), col_names = TRUE)
+
+```
+
+
+
+# adding growth
+```{r}
+
+meta <- meta %>% 
+  mutate(new_day = case_when(
+    day %in% c(1, 8) ~ paste0("0",day),
+    day == day ~ day))
+
+
+meta <- meta %>% 
+  mutate(growth = case_when(
+    new_day %in% c("01", "08", "15B") ~ "before",
+    new_day %in% c("15V", "16", "17", "18", "19") ~ "after",
+    new_day %in% c("20", "22", "25", "29", "36") ~ "regrowth",
+    TRUE ~ "NA"
+  ))
+
+meta$growth[meta$room_type == "mc"] <- "NA"
+
+meta$growth <- factor(meta$growth, levels = c("before", "after", "regrowth", "NA"))
+
+```
+
+
+
+### changing V to D
+```{r}
+
+meta$c_day <- meta$new_day
+meta$c_day[meta$new_day == "15V"] <- "15D"
+
+```
+
+
+# Culture fig
+```{r}
+
+
+meta %>%
+  filter(!is.na(plate_type)) %>%
+  filter(room_type != "untreated") %>%
+  filter(c_day %in% c("01", "08", "15B")) %>% 
+  group_by(room, c_day, plate_type) %>%
+  summarise(total_CFU = sum(CFU_swab)) %>% 
+  ungroup() %>% 
+  group_by(plate_type) %>% 
+  summarise(med_CFU = median(total_CFU), med_st = sd(total_CFU))
+
+
+dot_colors <- c(
+  "#4E79A7",  # muted blue
+  "#F28E2B",  # muted orange
+  "#E15759",  # muted red
+  "#76B7B2",  # muted teal
+  "#59A14F",  # muted green
+  "#EDC948",  # muted yellow
+  "#B07AA1",  # muted purple
+  "#FF9DA7",  # muted pink
+  "#9C755F",  # muted brown
+  "#BAB0AC",  # muted gray
+  "#6C5B7B",  # muted dark purple
+  "#00796B"   # muted dark teal
+)
+
+
+n_plot <- meta %>% 
+  filter(!(is.na(plate_type))) %>% 
+  filter(sample_id != "H6-12") %>% 
+  filter(sample_id != "H2-25") %>% 
+  filter(sample_id != "P5-15B") %>% 
+  filter(room_type != "untreated") %>% 
+  filter(plate_type == "n") %>% 
+  group_by(room, c_day, plate_type, room_type) %>% 
+  summarise(total_CFU = sum(CFU_swab),) %>% 
+  ggplot(., aes(x = c_day, y = total_CFU)) +
+  geom_boxplot() +
+  geom_hline(yintercept=11610000, linetype="dashed", color = "blue") +
+  geom_point(aes(colour = room)) +
+  scale_y_continuous(trans = "log10", limits = c(.1, 3e8)) +
+  theme_bw() +
+  scale_color_manual(values = dot_colors) +
+  ylab(bquote(~CFU/cm^2)) + xlab("") +
+  theme(legend.position = "none")
+
+p_plot <- meta %>% 
+  filter(!(is.na(plate_type))) %>% 
+  filter(sample_id != "H6-12") %>% 
+  filter(sample_id != "H2-25") %>% 
+  filter(sample_id != "P5-15B") %>% 
+  filter(room_type != "untreated") %>% 
+  filter(plate_type == "p") %>% 
+  group_by(room, c_day, plate_type, room_type) %>% 
+  summarise(total_CFU = sum(CFU_swab),) %>% 
+  ggplot(., aes(x = c_day, y = total_CFU)) +
+  geom_boxplot() +
+  geom_hline(yintercept=2220000, linetype="dashed", color = "blue") +
+  geom_point(aes(color = room)) +
+  #scale_shape_manual(values = c("filled" = 16, "open" = 1)) +
+  #facet_wrap(~plate_type) +
+  scale_color_manual(values = dot_colors) +
+  scale_y_continuous(trans = "log10", limits = c(.1, 3e8)) +
+  theme_bw() +
+  ylab(bquote(~CFU/cm^2)) + xlab("")
+
+
+culture_plot <- plot_grid(n_plot, p_plot, labels=c("A", "B"), ncol=2, rel_widths = c(1.62,2))
+
+ggsave("cult_plot.eps", culture_plot, device = "eps", width = 12, height = 9, units = "in")
+
+remove(n_plot, p_plot)
+
+```
+
+### stats
+```{r}
+
+
+col_stats <- meta %>%
+  filter(!is.na(plate_type)) %>%
+  filter(room_type != "untreated") %>%
+  filter(new_day %in% c("01", "08", "15B")) %>% 
+  group_by(room, new_day, plate_type) %>%
+  summarise(total_CFU = sum(CFU_swab)) %>% 
+  pivot_wider(., names_from = plate_type, values_from = total_CFU)
+
+
+wilcox.test(col_stats$n, col_stats$p, paired = TRUE)
+
+
+```
+
+
+
+### subsetting by patient v hallway
+```{r}
+
+
+meta %>%
+  filter(!is.na(plate_type)) %>%
+  filter(room_type != "untreated") %>%
+  filter(new_day %in% c("01", "08", "15B")) %>% 
+  group_by(room, new_day, plate_type, room_type) %>%
+  summarise(total_CFU = sum(CFU_swab)) %>% 
+  ungroup() %>% 
+  group_by(plate_type, room_type) %>% 
+  summarise(med_CFU = median(total_CFU))
+
+
+n_f_plot <-meta %>% 
+  filter(!(is.na(plate_type))) %>% 
+  filter(room_type != "untreated") %>% 
+  filter(plate_type == "n") %>% 
+  group_by(room, new_day, plate_type, room_type) %>% 
+  summarise(total_CFU = sum(CFU_swab),) %>% 
+  ggplot(., aes(x = new_day, y = total_CFU, fill = room_type)) +
+  geom_boxplot() +
+  geom_hline(yintercept=7530000, linetype="dashed", color = "#00BFC4") +
+  geom_hline(yintercept=20900000, linetype="dashed", color = "#F8766D") +
+  scale_y_continuous(trans='log10') + 
+  theme_bw() +
+  ylab(bquote(~CFU/cm^2)) + xlab("") +
+  theme(legend.position = "none")
+
+p_f_plot <- meta %>% 
+  filter(!(is.na(plate_type))) %>% 
+  filter(room_type != "untreated") %>% 
+  filter(plate_type == "p") %>% 
+  group_by(room, new_day, plate_type, room_type) %>% 
+  summarise(total_CFU = sum(CFU_swab),) %>% 
+  ggplot(., aes(x = new_day, y = total_CFU, fill = room_type)) +
+  geom_boxplot() +
+  geom_hline(yintercept=970000, linetype="dashed", color = "#00BFC4") +
+  geom_hline(yintercept=2610000, linetype="dashed", color = "#F8766D") +
+  scale_y_continuous(trans='log10') + 
+  theme_bw() +
+  labs(fill = "Sink Type") +
+  ylab(bquote(~CFU/cm^2)) + xlab("")
+
+culture_sup_plot <- plot_grid(n_f_plot, p_f_plot, labels=c("A", "B"), ncol=2, rel_widths = c(1.6,2))
+
+rm(n_f_plot, p_f_plot)
+
+```
+
+
+## resistant ratios
+```{r}
+
+
+# per room
+ratio_room <- meta %>%
+  filter(!is.na(plate_type)) %>%
+  filter(room_type != "untreated") %>%
+  filter(sample_id != "H6-12") %>% 
+  filter(sample_id != "H2-25") %>% 
+  filter(sample_id != "P5-15B") %>% 
+  group_by(new_day, plate_type, room, growth) %>%
+  summarise(total_CFU = sum(CFU_swab)) %>% 
+  pivot_wider(names_from = plate_type, 
+              values_from = total_CFU, 
+              values_fill = list(total_CFU = 0)) %>% 
+  mutate(ratio = (p/n)*100)
+
+
+# stats for this
+ratio_stats <- ratio_room %>% 
+  select(growth, new_day, ratio) %>% 
+  group_by(growth) %>% 
+  summarise(med_ratio = median(ratio), 
+            Q1 = quantile(ratio, 0.25, na.rm = TRUE),
+            Q3 = quantile(ratio, 0.75, na.rm = TRUE))
+kruskal.test(ratio ~ growth, data = ratio_room)
+
+ratio_stats
+
+
+```
+
+
+
+# Untreated Culture Fig
+```{r}
+
+
+untreated_df <- meta %>% 
+  mutate(media_type = case_when(
+    plate_type == "n" ~ "Total Bacteria",
+    plate_type == "p" ~ "Carbapenem-Resistant\n Bacteria"
+  ), sink = case_when(
+    room_type %in% c("hallway", "patient") ~ "treated",
+    room_type == "untreated" ~ "untreated"
+  )) %>% 
+  filter(new_day %in% c("29", "36")) %>% 
+  filter(growth == "regrowth") %>% 
+  group_by(room, new_day, media_type, sink, growth) %>% 
+  summarise(total_CFU = sum(CFU_swab))
+
+
+untreated_df$media_type <- factor(untreated_df$media_type, levels = c("Total Bacteria", "Carbapenem-Resistant\n Bacteria"))
+
+
+untreated_fig <- untreated_df %>% 
+  ggplot(., aes(x = growth, y = total_CFU, fill = sink)) +
+  geom_boxplot() +
+  facet_wrap(~media_type) +
+  scale_y_continuous(trans = "log10", limits = c(.1, 3e8)) +
+  theme_bw() +
+  ylab(bquote(~CFU/cm^2)) + 
+  labs(fill = "Treatment", x = "") +
+  stat_compare_means(aes(group = sink), 
+                     method = "wilcox.test",
+                     label = "p.signif", label.y = 8.3) + xlab("") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank())
+
+
+ggsave("untreated_inlay.eps", untreated_fig, device = "eps", width = 12, height = 11, units = "in")
+
+```
+
+
+
+# Making ps
+```{r}
+
+# otu
+otu_df <- data.frame(otu_df)
+rownames(otu_df) <- otu_df$taxID
+otu_df <- otu_df %>% 
+  select(-(taxID), -(superkingdom), -(phylum), -(class), -(order), -(family), -(genus), -(species), -(original_taxName), -(original_rank)) %>% 
+  as.matrix()
+
+
+# tax
+tax_df <- data.frame(tax_df)
+rownames(tax_df) <- tax_df$taxID
+tax_df <- tax_df %>% 
+  select(-(taxID)) %>% 
+  as.matrix()
+  
+
+```
+
+
+### meta
+```{r}
+
+meta$new_id <- paste0(meta$room,".", meta$day)
+
+meta <- meta %>% 
+  select(new_id, sample_id, room, day, room_type, before_after, growth) %>% 
+  mutate(new_id = str_replace(new_id, "-", "_")) %>% 
+  data.frame() %>% 
+  unique()
+
+rownames(meta) <- meta$new_id
+
+meta <- meta %>% 
+  mutate(new_day = case_when(
+    day %in% c(1, 8) ~ paste0("0",day),
+    day == day ~ day))
+
+day_levels <- c("01", "08", "15B", "16", "17", "18", "25", "29", "36", "2", "3")
+
+# Apply it as a factor
+meta$new_day <- factor(meta$new_day, levels = day_levels)
+
+```
+
+
+### understanding sample differences
+```{r}
+
+setdiff(meta$new_id, colnames(otu_df))
+
+```
+
+
+
+### construct
+```{r}
+
+ps <- phyloseq(otu_table(otu_df, taxa_are_rows = TRUE), tax_table(tax_df), sample_data(meta))
+
+rm(otu_df, tax_df, meta, culture_plot, culture_sup_plot)
+
+```
+
+
+# Read Summary
+```{r}
+
+ps@sam_data$SampleSums <- sample_sums(ps)
+meta <- data.frame(ps@sam_data)
+
+
+median(meta$SampleSums)
+range(meta$SampleSums)
+
+# histogram
+meta %>% 
+  filter(before_after != "NA") %>% 
+  ggplot(., aes(x = SampleSums)) + 
+  geom_histogram() + 
+  theme_bw() + 
+  facet_wrap(~growth) +
+  ylab("Counts") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white")) +
+  xlab("Number of Reads")
+
+meta$sample_type <- meta$room_type
+meta$sample_type <- factor(meta$sample_type, levels = c("hallway", "patient", "untreated", "mc", "neg"))
+
+sample_data(ps) <- meta
+
+# boxplots
+read_before <- meta %>% 
+  ggplot(., aes(x = sample_type, y = SampleSums)) + 
+  geom_boxplot() +
+  theme_bw() + 
+  ylab("Number of Reads") +
+  xlab("") + ylim(0, 1e8)
+
+# overview
+meta %>% 
+  group_by(growth) %>% 
+  summarise(median_ss = median(SampleSums), avg_ss = mean(SampleSums), range_ss = range(SampleSums))
+
+
+
+```
+
+
+# EDA
+### Filtering
+Agglomerating to at least the Family level
+```{r}
+
+ps_clean <- ps %>% 
+  subset_taxa(., !(is.na(family)))
+
+
+# reads per sample on this new ps object
+ps_clean@sam_data$SampleSums <- sample_sums(ps_clean)
+meta <- data.frame(ps_clean@sam_data)
+
+
+```
+
+
+
+### clean-up
+```{r}
+
+sample_data(ps_clean) <- meta
+rm(day_levels, ratio_room, ratio_stats, col_stats, untreated_df, untreated_fig, dot_colors)
+
+```
+
+
+# Filter to Bacteria
+```{r}
+
+ps_filt <- ps_clean %>% 
+  subset_taxa(., superkingdom == "Bacteria")
+ps_filt <- subset_taxa(ps_filt, taxa_sums(ps_filt) >0)
+
+ps_filt@sam_data$SampleSums <- sample_sums(ps_filt)
+meta <- data.frame(ps_filt@sam_data)
+
+taxa_reads <- data.frame(
+  Taxon = taxa_names(ps_filt),
+  TotalReads = taxa_sums(ps_filt))
+
+sum(taxa_reads$TotalReads<1200)
+
+# test
+ps_filt <- subset_taxa(ps_filt, taxa_sums(ps_filt) >1200)
+
+ps_filt@sam_data$SampleSums <- sample_sums(ps_filt)
+meta <- data.frame(ps_filt@sam_data)
+
+```
+
+
+
+### Evaluating Contamination
+```{r}
+
+mdf_prep <- prep_mdf(ps_filt, subgroup_level = "genus")
+
+mdf_prep$status <- "sample"
+mdf_prep$status[mdf_prep$room_type == "neg"] <- "negative"
+
+
+con_means <- mdf_prep %>% 
+  filter(room_type == "neg") %>% 
+  group_by(OTU) %>% 
+  summarize(
+    mean_abund = mean(Abundance, na.rm = TRUE),
+    median_abund = median(Abundance, na.rm = TRUE)
+  )
+
+
+cons_df <- mdf_prep %>%
+  left_join(con_means, by = "OTU")
+
+cons_df <- cons_df %>%
+  filter(room_type != "neg" & room_type != "mc") %>% 
+  group_by(OTU, genus) %>% 
+  mutate(
+    fold_change_mean = mean_abund / Abundance,
+    fold_change_median = median_abund / Abundance
+  ) %>% 
+  summarize(sum_mean = sum(fold_change_mean > 10), 
+            sum_med = sum(fold_change_median > 10))
+
+# Taking only the taxa that have >10 fold change in at least 90% of samples
+contam_otu <- cons_df %>% 
+  filter(sum_mean > 107) %>% 
+  filter(genus != "Acidovorax") %>% 
+  select(OTU)
+
+
+```
+
+
+
+# Filter out contaminants
+```{r}
+
+ps_decon <- prune_taxa(!(taxa_names(ps_filt) %in% contam_otu$OTU), ps_filt)
+
+
+# reads per sample on this new ps object
+ps_decon@sam_data$SampleSums <- sample_sums(ps_decon)
+meta <- data.frame(ps_decon@sam_data)
+
+```
+
+
+# Reads
+```{r}
+
+growth_plot <- meta %>% 
+  filter(!(sample_type %in% c("untreated", "mc", "neg"))) %>% 
+  ggplot(., aes(x = growth, y = SampleSums)) +
+  geom_boxplot() + 
+  theme_bw() +
+  ylab("Reads") + xlab("")
+
+
+read_test <- meta %>% 
+  filter(!(sample_type %in% c("untreated", "mc", "neg"))) %>%
+  mutate(growth = fct_drop(growth)) %>% 
+  filter(!(is.na(growth))) 
+
+kruskal.test(SampleSums ~ growth, data = read_test)
+
+stat.test <- meta %>% 
+  filter(!(sample_type %in% c("untreated", "mc", "neg"))) %>%
+  mutate(growth = fct_drop(growth)) %>% 
+  filter(!(is.na(growth))) %>% 
+  pairwise_wilcox_test(SampleSums ~ growth, p.adjust.method = "fdr")
+
+growth_plot + stat_pvalue_manual(stat.test, label = "p.adj", y.position = c(4.8e7, 5.5e7, 6.3e7))
+
+rm(growth_plot, stat.test)
+
+
+```
+
+
+# Controls post filtering
+### Negative
+```{r}
+
+mdf_con <- prep_mdf(ps_filt, subgroup_level = "genus")
+
+mdf_con <- mdf_con %>% 
+  filter(room == "negswab")
+
+cont_otu <- mdf_con %>% 
+  select(OTU) %>% 
+  unique()
+
+
+
+# plotting
+color_df <- create_color_dfs(mdf_con, group_level = "phylum", subgroup_level = "genus", selected_groups = c("Bacillota", "Actinomycetota", "Bacteroidota", "Pseudomonadota"))
+
+new_groups <- extend_group(color_df$mdf, color_df$cdf, "phylum", "genus", "Pseudomonadota", existing_palette = "micro_purple", new_palette = "micro_cvd_purple", n_add = 5)
+
+pseudo_order <- reorder_samples_by(new_groups$mdf, new_groups$cdf, order = "Pseudomonadota", group_level = "phylum", subgroup_level = "genus", sink_abundant_groups = FALSE)
+
+cust_legend <- custom_legend(new_groups$mdf, new_groups$cdf, group_level = "phylum", subgroup_level = "genus", legend_orientation = "horizontal")
+
+neg_plot <- plot_microshades(pseudo_order$mdf, pseudo_order$cdf, group_label = "Phylum-Genus", x = "sample_id") + 
+  theme_bw() +
+  facet_wrap(~room, scales = "free") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white")) + ylab("Relative Abundance") + xlab("Day") + ylim(0,1.0) + theme(legend.position = "none")
+
+neg_plot / cust_legend
+
+```
+
+
+
+# Negatives in samples
+```{r}
+
+mdf_prep <- prep_mdf(ps_decon, subgroup_level = "genus")
+mdf_prep <- mdf_prep %>% 
+  filter(room_type != "mc")
+
+mdf_neg <- mdf_prep %>% 
+  filter(room == "negswab")
+
+# plotting
+color_df <- create_color_dfs(mdf_neg, group_level = "phylum", subgroup_level = "genus", selected_groups = c("Bacillota", "Actinomycetota", "Bacteroidota", "Pseudomonadota"))
+
+new_groups <- extend_group(color_df$mdf, color_df$cdf, "phylum", "genus", "Pseudomonadota", existing_palette = "micro_purple", new_palette = "micro_cvd_purple", n_add = 5)
+
+
+mdf_to_plot <- match_cdf(
+  mdf_prep,
+  new_groups$mdf,
+  df_is_mdf = TRUE,
+  group_level = "phylum",
+  subgroup_level = "genus")
+
+cust_legend <- custom_legend(mdf_to_plot, new_groups$cdf, group_level = "phylum", subgroup_level = "genus", legend_orientation = "horizontal")
+
+neg_pal <- plot_microshades(mdf_to_plot, new_groups$cdf, group_label = "Phylum-Genus", x = "sample_id") + 
+  theme_bw() +
+  facet_wrap(~room_type, scales = "free") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white"), axis.text.x = element_blank()) + ylab("Relative Abundance") + xlab("Sample") + ylim(0,1.0) + theme(legend.position = "none")
+
+neg_plot1 <- plot_grid(neg_pal, cust_legend, rel_heights = c(1, .5), nrow = 2)
+
+```
+
+
+
+### reads
+```{r}
+
+meta$room_type <- factor(meta$room_type, levels = c("patient", "hallway", "neg", "NA"))
+
+meta$status <- "sample"
+meta$status[meta$room_type == "neg"] <- "negative"
+
+median(meta$SampleSums)
+range(meta$SampleSums)
+
+neg_plot2 <- meta %>% 
+  filter(room_type != "mc") %>% 
+  ggplot(., aes(x = status, y = SampleSums)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  ylab("Number of Reads") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white")) +
+  labs(fill = "Room Type") + xlab("")
+
+
+meta %>% 
+  filter(room_type != "mc" & room_type != "untreated") %>% 
+  ggplot(., aes(x = growth, y = SampleSums, fill = room_type)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  ylab("Number of Reads") +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), strip.background = element_rect(fill="white")) +
+  labs(fill = "Room Type") +
+  xlab("Number of Reads")
+
+```
+
+
+#### stats
+```{r}
+
+set.seed(200)
+
+# Observed difference in mean reads
+obs_diff <- median(meta$SampleSums[meta$status == "sample"]) - 
+            median(meta$SampleSums[meta$status == "negative"])
+
+# Permutation test
+n_perms <- 10000
+perm_diffs <- replicate(n_perms, {
+  permuted_labels <- sample(meta$status)
+  median(meta$SampleSums[permuted_labels == "sample"]) - 
+  median(meta$SampleSums[permuted_labels == "negative"])
+})
+
+# Two-sided p-value
+p_val <- mean(abs(perm_diffs) >= abs(obs_diff))
+
+```
+
+
+# Supplementary figure 3
+```{r}
+
+neg_plot2_with_space <- plot_grid(neg_plot2, plot_spacer(), ncol = 1, rel_heights = c(1, 0.3))
+
+sup_fig3 <- plot_grid(neg_plot2_with_space, neg_plot1, rel_widths = c(0.9, 2), labels = c("A", "B"))
+
+```
+
+
+# Supplementary Fig 2
+```{r}
+
+read_after <- meta %>% 
+  ggplot(., aes(x = sample_type, y = SampleSums)) + 
+  geom_boxplot() +
+  theme_bw() + 
+  ylab("Number of Reads") +
+  xlab("") + ylim(0, 1e8)
+
+plot_grid(read_before, read_after, labels = c("A", "B"), ncol = 2)
+
+```
+
+
+# clean up/save
+```{r}
+
+rm(list = setdiff(ls(), c("meta", "ps_clean", "ps_decon")))
+
+save.image(file = here("Data", "shortread_ps.RData"))
+
+```
+
