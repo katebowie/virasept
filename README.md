@@ -111,6 +111,15 @@ Outside of the raw data, the processed data is as follows:
 * OTU table for shotgun metagenomics --> []()
 
 
+
+### Scripts
+
+
+To process the raw data:
+* Configuration file to run anvio on the shotgun metagenomics data [anvio-metagenomics-config.json](https://github.com/katebowie/virasept/blob/main/anvio-metagenomics-config.json)
+* something
+
+
 ---
 
 ### Requirements for data processing
