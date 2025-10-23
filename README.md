@@ -72,7 +72,7 @@ Antimicrobial-resistant pathogens and their associated infections represent majo
 
 Here we have the code used to analyze data from our paper <i>"Disinfection of Hospital Sink Drains Enriches Pseudomonadota and Efflux Pump-Mediated Antibiotic Resistance in Reestablished Biofilms"</i>. There are two categories of code here: bash scripts used to process the raw data, and the R code used for downstream analysis. 
 
-All R scripts are HTMLs and should be run using R and RStudio. The code is numbered in order of analysis. For ease of use, we are also providing the processed data listed below. 
+All R scripts are available as .RMDs and HTMLs, and should be run using R and RStudio. The code is numbered in order of analysis. For ease of use, we are also providing the processed data listed below. 
 
 The raw data is available on the NCBI SRA (accession number: PRJNA1310651). 
 
