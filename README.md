@@ -116,8 +116,8 @@ Outside of the raw data, the processed data is as follows:
 
 
 To process the raw data:
-* Configuration file to run anvio on the shotgun metagenomics data [anvio-metagenomics-config.json](https://github.com/katebowie/virasept/blob/main/anvio-metagenomics-config.json)
-* something
+* Configuration file to run anvio on the shotgun metagenomics data --> [anvio-metagenomics-config.json](https://github.com/katebowie/virasept/blob/main/anvio-metagenomics-config.json)
+* Configuration file to run pipeline for longread metagenomics --> [longread-config](https://github.com/katebowie/virasept/blob/main/longread_config.yaml)
 
 
 ---
