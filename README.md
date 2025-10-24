@@ -37,7 +37,7 @@ Antimicrobial-resistant pathogens and their associated infections represent majo
   </p>
 </div>
 
-**Note:** This repository is maintained by [@katebowie](https://github.com/katebowie) in collaboration with the [Gerstein Lab](https://github.com/gersteinlab). The official repository will be hosted under the Gerstein Lab organization upon publication. <br><br>
+**Note:** This repository was developed by [@katebowie](https://github.com/katebowie) of the [Gerstein Lab](https://github.com/gersteinlab). The official repository will be hosted under the Gerstein Lab organization upon publication. <br><br>
 
 
 
