@@ -143,9 +143,9 @@ Kate Bowie - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [The noun project](https://thenounproject.com) - sink at top by Nendra Wahyu Kuncoro from Noun Project (CC BY 3.0)
 * The patients and staff at Yale New Haven Hospital
-* []()
+* The CDC Biofilm Team
+* [The noun project](https://thenounproject.com) - sink at top by Nendra Wahyu Kuncoro from Noun Project (CC BY 3.0)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
