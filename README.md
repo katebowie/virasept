@@ -54,10 +54,6 @@ Antimicrobial-resistant pathogens and their associated infections represent majo
     </li>
     <li>
       <a href="#requirements">Requirements</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
     </li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -146,7 +142,7 @@ Kate Bowie - [@katerbowie](https://twitter.com/katerbowie) - kate.bowie@yale.edu
 ## Acknowledgments
 
 * [The noun project](https://thenounproject.com) - sink at top by Nendra Wahyu Kuncoro from Noun Project (CC BY 3.0)
-* Patients and staff at Yale New Haven Hospital
+* The patients and staff at Yale New Haven Hospital
 * []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
